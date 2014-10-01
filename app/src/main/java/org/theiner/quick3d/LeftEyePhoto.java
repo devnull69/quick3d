@@ -2,9 +2,11 @@ package org.theiner.quick3d;
 
 import android.app.Fragment;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -120,8 +122,15 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
 
                 Camera.Parameters params = camera.getParameters();
 
+                Display display = getActivity().getWindowManager().getDefaultDisplay();
+                Point size = new Point();
+                display.getRealSize(size);
+                int width = size.x;
+                int height = size.y;
+                float ratio = height / (float)width;
+
                 List<Camera.Size> sizeList = params.getSupportedPictureSizes();
-                int chosenSize = Helper.getPictureSizeIndexForHeight(sizeList, 800);
+                int chosenSize = Helper.getPictureSizeIndexForHeight(sizeList, 800, ratio);
                 params.setPictureSize(sizeList.get(chosenSize).width, sizeList.get(chosenSize).height);
 
                 Helper.setRotationParameter(getActivity(), cameraId, params);

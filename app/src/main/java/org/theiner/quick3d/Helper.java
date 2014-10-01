@@ -52,15 +52,18 @@ public class Helper {
         param.setRotation(toRotate);
     }
 
-    public static int getPictureSizeIndexForHeight(List<Camera.Size> sizeList, int height) {
+    public static int getPictureSizeIndexForHeight(List<Camera.Size> sizeList, int height, float ratio) {
         int chosenHeight = -1;
+        int previousHeight = 0;
         for(int i=0; i<sizeList.size(); i++) {
-            if(sizeList.get(i).height < height) {
-                chosenHeight = i-1;
-                if(chosenHeight==-1)
-                    chosenHeight = 0;
-                break;
-            }
+            float thisRatio = sizeList.get(i).width/(float)sizeList.get(i).height;
+            if(thisRatio == ratio)
+                if(sizeList.get(i).height < height) {
+                    chosenHeight = previousHeight;
+                    break;
+                } else {
+                    previousHeight = i;
+                }
         }
         return chosenHeight;
     }
