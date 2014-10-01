@@ -2,8 +2,10 @@ package org.theiner.quick3d;
 
 import android.app.Activity;
 import android.hardware.Camera;
+import android.os.Environment;
 import android.view.Surface;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -61,5 +63,11 @@ public class Helper {
             }
         }
         return chosenHeight;
+    }
+
+    public static File getDir() {
+        File sdDir = Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        return new File(sdDir, "Quick3D");
     }
 }

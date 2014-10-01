@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -53,9 +55,42 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
         }
     }
 
-    public void onClick(View view, String filename) {
-        camera.takePicture(null, null,
-                new PhotoHandler(getActivity().getApplicationContext(), filename + "_left.jpg"));
+    public void onClick(View view, final String filename) {
+        camera.takePicture(null, null, new Camera.PictureCallback() {
+
+            @Override
+            public void onPictureTaken(byte[] bytes, Camera camera) {
+                File pictureFileDir = Helper.getDir();
+
+                if (!pictureFileDir.exists() && !pictureFileDir.mkdirs()) {
+
+                    Log.d(Quick3DMain.DEBUG_TAG, "Can't create directory to save image.");
+                    Toast.makeText(getActivity(), "Can't create directory to save image.",
+                            Toast.LENGTH_LONG).show();
+                    return;
+
+                }
+
+                String photoFile = pictureFileDir.getPath() + File.separator + filename + "_left.jpg";
+
+                File pictureFile = new File(photoFile);
+
+                try {
+                    FileOutputStream fos = new FileOutputStream(pictureFile);
+                    fos.write(bytes);
+                    fos.close();
+                    //Toast.makeText(context, "New Image saved:" + photoFile, Toast.LENGTH_LONG).show();
+                    Quick3DMain actMain = (Quick3DMain) getActivity();
+                    actMain.callbackAfterPictureSaved();
+                } catch (Exception error) {
+                    Log.d(Quick3DMain.DEBUG_TAG, "File" + filename + "not saved: "
+                            + error.getMessage());
+                    Toast.makeText(getActivity(), "Image could not be saved.",
+                            Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
     }
 
     @Override
@@ -127,6 +162,5 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
         }
         super.onPause();
     }
-
 
 }

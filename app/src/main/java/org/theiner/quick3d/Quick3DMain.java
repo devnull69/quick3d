@@ -27,7 +27,6 @@ public class Quick3DMain extends Activity {
         setContentView(R.layout.activity_quick3dmain);
 
         lep = new LeftEyePhoto();
-        rep = new RightEyePhoto();
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.add(R.id.flFragmentContainer, lep);
@@ -43,6 +42,7 @@ public class Quick3DMain extends Activity {
         showFotoParameter.putString("filename", filename);
 
         sf = (ShowFoto) Fragment.instantiate(this, ShowFoto.class.getName(), showFotoParameter);
+        rep = (RightEyePhoto) Fragment.instantiate(this, RightEyePhoto.class.getName(), showFotoParameter);
 
     }
 
@@ -60,16 +60,26 @@ public class Quick3DMain extends Activity {
     }
 
     public void onClick(View view) {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
         if(currentFragment instanceof LeftEyePhoto) {
             ((LeftEyePhoto) currentFragment).onClick(view, filename);
+        } else if(currentFragment instanceof RightEyePhoto){
+            ((RightEyePhoto) currentFragment).onClick(view, filename);
+        } else {
+            System.exit(0);
+        }
+    }
+
+    public void callbackAfterPictureSaved() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        if(currentFragment instanceof LeftEyePhoto) {
             ft.replace(R.id.flFragmentContainer, rep);
             currentFragment = rep;
-        } else {
-            ((RightEyePhoto) currentFragment).onClick(view, filename);
+        } else if(currentFragment instanceof RightEyePhoto){
             ft.replace(R.id.flFragmentContainer, sf);
             currentFragment = sf;
         }
         ft.commit();
     }
+
+
 }

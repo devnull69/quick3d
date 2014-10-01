@@ -2,6 +2,8 @@ package org.theiner.quick3d;
 
 import android.app.Fragment;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,8 +12,11 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -20,8 +25,10 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
 
     public final static String DEBUG_TAG = "Quick3DRight";
     private SurfaceView svKamera;
+    private ImageView showFotoView;
     private Camera camera;
     private int cameraId = 0;
+    private String _filename;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,6 +40,7 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
         View layout = inflater.inflate(R.layout.fragment_right_eye_photo, null);
 
         svKamera = (SurfaceView) layout.findViewById(R.id.myrightsurface);
+        showFotoView = (ImageView) layout.findViewById(R.id.overlay);
 
         return layout;
     }
@@ -40,6 +48,10 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        _filename = getArguments().getString("filename");
+
+
         // do we have a camera?
         if (!getActivity().getPackageManager()
                 .hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
@@ -51,9 +63,42 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
         }
     }
 
-    public void onClick(View view, String filename) {
-        camera.takePicture(null, null,
-                new PhotoHandler(getActivity().getApplicationContext(), filename + "_right.jpg"));
+    public void onClick(View view, final String filename) {
+        camera.takePicture(null, null, new Camera.PictureCallback() {
+
+            @Override
+            public void onPictureTaken(byte[] bytes, Camera camera) {
+                File pictureFileDir = Helper.getDir();
+
+                if (!pictureFileDir.exists() && !pictureFileDir.mkdirs()) {
+
+                    Log.d(Quick3DMain.DEBUG_TAG, "Can't create directory to save image.");
+                    Toast.makeText(getActivity(), "Can't create directory to save image.",
+                            Toast.LENGTH_LONG).show();
+                    return;
+
+                }
+
+                String photoFile = pictureFileDir.getPath() + File.separator + filename + "_right.jpg";
+
+                File pictureFile = new File(photoFile);
+
+                try {
+                    FileOutputStream fos = new FileOutputStream(pictureFile);
+                    fos.write(bytes);
+                    fos.close();
+                    //Toast.makeText(context, "New Image saved:" + photoFile, Toast.LENGTH_LONG).show();
+                    Quick3DMain actMain = (Quick3DMain) getActivity();
+                    actMain.callbackAfterPictureSaved();
+                } catch (Exception error) {
+                    Log.d(Quick3DMain.DEBUG_TAG, "File" + filename + "not saved: "
+                            + error.getMessage());
+                    Toast.makeText(getActivity(), "Image could not be saved.",
+                            Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
     }
 
     @Override
@@ -93,6 +138,18 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
 
                 camera.setPreviewDisplay(sh);
                 camera.startPreview();
+
+                File pictureFileDir = Helper.getDir();
+
+                String fullPath = pictureFileDir.getPath() + File.separator + _filename + "_left.jpg";
+
+                File pictureFile = new File(fullPath);
+
+                if(pictureFile.exists()) {
+                    Bitmap myBitmap = BitmapFactory.decodeFile(pictureFile.getAbsolutePath());
+                    showFotoView.setImageBitmap(myBitmap);
+                    showFotoView.setAlpha(80);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
