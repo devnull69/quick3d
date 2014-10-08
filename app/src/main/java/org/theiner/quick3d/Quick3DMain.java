@@ -3,6 +3,7 @@ package org.theiner.quick3d;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,10 +16,10 @@ import java.util.Date;
 public class Quick3DMain extends Activity {
 
     public final static String DEBUG_TAG = "Quick3DMain";
+    public final static String FILENAME_MESSAGE = "org.theiner.quick3d.filename";
     private String filename = "";
     private LeftEyePhoto lep;
     private RightEyePhoto rep;
-    private ShowFoto sf;
     private Fragment currentFragment;
 
     @Override
@@ -41,7 +42,6 @@ public class Quick3DMain extends Activity {
         Bundle showFotoParameter = new Bundle();
         showFotoParameter.putString("filename", filename);
 
-        sf = (ShowFoto) Fragment.instantiate(this, ShowFoto.class.getName(), showFotoParameter);
         rep = (RightEyePhoto) Fragment.instantiate(this, RightEyePhoto.class.getName(), showFotoParameter);
 
     }
@@ -64,21 +64,21 @@ public class Quick3DMain extends Activity {
             ((LeftEyePhoto) currentFragment).onClick(view, filename);
         } else if(currentFragment instanceof RightEyePhoto){
             ((RightEyePhoto) currentFragment).onClick(view, filename);
-        } else {
-            System.exit(0);
         }
     }
 
     public void callbackAfterPictureSaved() {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
         if(currentFragment instanceof LeftEyePhoto) {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.flFragmentContainer, rep);
             currentFragment = rep;
+            ft.commit();
         } else if(currentFragment instanceof RightEyePhoto){
-            ft.replace(R.id.flFragmentContainer, sf);
-            currentFragment = sf;
+            Intent intent = new Intent(this, ShowFotos.class);
+            intent.putExtra(FILENAME_MESSAGE, filename);
+            startActivity(intent);
+            finish();
         }
-        ft.commit();
     }
 
 
