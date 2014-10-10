@@ -74,7 +74,6 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
 
                 if (!pictureFileDir.exists() && !pictureFileDir.mkdirs()) {
 
-                    Log.d(Quick3DMain.DEBUG_TAG, "Can't create directory to save image.");
                     Toast.makeText(getActivity(), "Can't create directory to save image.",
                             Toast.LENGTH_LONG).show();
                     return;
@@ -93,8 +92,6 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
                     Quick3DMain actMain = (Quick3DMain) getActivity();
                     actMain.callbackAfterPictureSaved();
                 } catch (Exception error) {
-                    Log.d(Quick3DMain.DEBUG_TAG, "File" + filename + "not saved: "
-                            + error.getMessage());
                     Toast.makeText(getActivity(), "Image could not be saved.",
                             Toast.LENGTH_LONG).show();
                 }
@@ -157,7 +154,7 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
                 if(pictureFile.exists()) {
                     Bitmap myBitmap = BitmapFactory.decodeFile(pictureFile.getAbsolutePath());
                     showFotoView.setImageBitmap(myBitmap);
-                    showFotoView.setAlpha(80);
+                    showFotoView.setAlpha(100);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -175,7 +172,6 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
             Camera.CameraInfo info = new Camera.CameraInfo();
             Camera.getCameraInfo(i, info);
             if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
-                Log.d(DEBUG_TAG, "Camera found");
                 cameraId = i;
                 break;
             }
