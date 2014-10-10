@@ -4,9 +4,9 @@ android {
     signingConfigs {
         standardselfsigned {
             keyAlias 'TheinerKey'
-            keyPassword 'ngc64738'
+            keyPassword 'xxxxx'
             storeFile file('C:/Users/theinet/Keystore/android.jks')
-            storePassword 'ngc64738'
+            storePassword 'xxxxx'
         }
     }
     compileSdkVersion 19
