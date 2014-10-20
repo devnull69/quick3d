@@ -1,11 +1,17 @@
 package org.theiner.quick3d;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Camera;
+import android.media.ExifInterface;
 import android.os.Environment;
 import android.view.Surface;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -65,6 +71,8 @@ public class Helper {
                     previousHeight = i;
                 }
         }
+        if(chosenHeight == -1)
+            chosenHeight = previousHeight;
         return chosenHeight;
     }
 
@@ -72,5 +80,52 @@ public class Helper {
         File sdDir = Environment
                 .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         return new File(sdDir, "Quick3D");
+    }
+
+    public static Bitmap getRotatedBitmap(File ff) {
+        Bitmap result;
+        int toRotate = neededRotation(ff);
+        result = BitmapFactory.decodeFile(ff.getAbsolutePath());
+        if(toRotate != 0) {
+            Matrix m = new Matrix();
+            m.postRotate(toRotate);
+            if(toRotate == 180) { // bei 0 oder 180 muss die Breite nicht mit der Höhe getauscht werden
+                result = Bitmap.createBitmap(result,
+                        0, 0, result.getWidth(), result.getHeight(),
+                        m, true);
+            } else {
+                result = Bitmap.createBitmap(result,
+                        0, 0, result.getHeight(), result.getWidth(),
+                        m, true);
+            }
+        }
+        return result;
+    }
+
+    private static int neededRotation(File ff)
+    {
+        try
+        {
+
+            ExifInterface exif = new ExifInterface(ff.getAbsolutePath());
+            int orientation = exif.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+            if (orientation == ExifInterface.ORIENTATION_ROTATE_270)
+            { return 270; }
+            if (orientation == ExifInterface.ORIENTATION_ROTATE_180)
+            { return 180; }
+            if (orientation == ExifInterface.ORIENTATION_ROTATE_90)
+            { return 90; }
+            return 0;
+
+        } catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

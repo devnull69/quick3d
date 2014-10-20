@@ -1,11 +1,15 @@
 package org.theiner.quick3d;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.hardware.Camera;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -31,6 +35,8 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
     private Camera camera;
     private int cameraId = 0;
     private String _filename;
+    RightEyePhoto me;
+    MediaPlayer _shootMP;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +57,8 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        me=this;
+
         _filename = getArguments().getString("filename");
 
 
@@ -66,7 +74,21 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
     }
 
     public void onClick(View view, final String filename) {
-        camera.takePicture(null, null, new Camera.PictureCallback() {
+        camera.takePicture(new Camera.ShutterCallback() {
+
+            @Override
+            public void onShutter() {
+                AudioManager meng = (AudioManager) me.getActivity().getSystemService(Context.AUDIO_SERVICE);
+                int volume = meng.getStreamVolume( AudioManager.STREAM_NOTIFICATION);
+
+                if (volume != 0)
+                {
+                    if (_shootMP == null)
+                        _shootMP = MediaPlayer.create(me.getActivity(), Uri.parse("file:///system/media/audio/ui/camera_click.ogg"));
+                    if (_shootMP != null)
+                        _shootMP.start();
+                }            }
+        }, null, new Camera.PictureCallback() {
 
             @Override
             public void onPictureTaken(byte[] bytes, Camera camera) {
@@ -152,7 +174,7 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
                 File pictureFile = new File(fullPath);
 
                 if(pictureFile.exists()) {
-                    Bitmap myBitmap = BitmapFactory.decodeFile(pictureFile.getAbsolutePath());
+                    Bitmap myBitmap = Helper.getRotatedBitmap(pictureFile);
                     showFotoView.setImageBitmap(myBitmap);
                     showFotoView.setAlpha(100);
                 }

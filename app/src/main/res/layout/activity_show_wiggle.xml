@@ -1,18 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-     android:layout_width="fill_parent"
+    android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/ivLeft" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ivRight"
-        android:layout_toRightOf="@id/ivLeft"/>
+        android:id="@+id/ivWiggle" />
 
     <ImageView
         android:layout_width="60dp"
@@ -24,8 +17,8 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginTop="65dp"
-        android:id="@+id/ivSwitch"
-        android:onClick="onSwitch" />
+        android:id="@+id/ivTwoImages"
+        android:onClick="onTwoImages" />
 
     <ImageView
         android:layout_width="60dp"
@@ -33,13 +26,5 @@
         android:layout_marginTop="130dp"
         android:id="@+id/ivAnaglyph"
         android:onClick="onAnaglyph" />
-
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="195dp"
-        android:id="@+id/ivWiggle"
-        android:onClick="onWiggle" />
-
 
 </RelativeLayout>

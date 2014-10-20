@@ -1,9 +1,14 @@
 package org.theiner.quick3d;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.hardware.Camera;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -28,6 +33,8 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
     private SurfaceView svKamera;
     private Camera camera;
     private int cameraId = 0;
+    MediaPlayer _shootMP = null;
+    LeftEyePhoto me;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,10 +62,25 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
             SurfaceHolder sh = svKamera.getHolder();
             sh.addCallback(this);
         }
+        me=this;
     }
 
     public void onClick(View view, final String filename) {
-        camera.takePicture(null, null, new Camera.PictureCallback() {
+        camera.takePicture(new Camera.ShutterCallback() {
+
+            @Override
+            public void onShutter() {
+                AudioManager meng = (AudioManager) me.getActivity().getSystemService(Context.AUDIO_SERVICE);
+                int volume = meng.getStreamVolume( AudioManager.STREAM_NOTIFICATION);
+
+                if (volume != 0)
+                {
+                    if (_shootMP == null)
+                        _shootMP = MediaPlayer.create(me.getActivity(), Uri.parse("file:///system/media/audio/ui/camera_click.ogg"));
+                    if (_shootMP != null)
+                        _shootMP.start();
+                }            }
+        }, null, new Camera.PictureCallback() {
 
             @Override
             public void onPictureTaken(byte[] bytes, Camera camera) {
