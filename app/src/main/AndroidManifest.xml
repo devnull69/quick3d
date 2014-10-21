@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.theiner.quick3d"
-    android:versionCode="1"
-    android:versionName="0.1" >
+    package="org.theiner.quick3d">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -14,7 +12,8 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+        android:name=".Q3DApplication">
         <activity
             android:name=".Quick3DMain"
             android:label="@string/app_name"

@@ -35,83 +35,118 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
     private int cameraId = 0;
     MediaPlayer _shootMP = null;
     LeftEyePhoto me;
+    Q3DApplication myApp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        myApp = ((Q3DApplication)this.getActivity().getApplicationContext());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_left_eye_photo, null);
-
         svKamera = (SurfaceView) layout.findViewById(R.id.mysurface);
+
+        myApp.appendTrace("LeftEyePhoto: View erzeugt\n");
 
         return layout;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        // do we have a camera?
-        if (!getActivity().getPackageManager()
-                .hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-            Toast.makeText(getActivity(), "No camera on this device", Toast.LENGTH_LONG)
-                    .show();
-        } else {
-            SurfaceHolder sh = svKamera.getHolder();
-            sh.addCallback(this);
+        try {
+            super.onActivityCreated(savedInstanceState);
+            // do we have a camera?
+            if (!getActivity().getPackageManager()
+                    .hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+                Toast.makeText(getActivity(), "No camera on this device", Toast.LENGTH_LONG)
+                        .show();
+            } else {
+                SurfaceHolder sh = svKamera.getHolder();
+                sh.addCallback(this);
+            }
+            me = this;
+            myApp.appendTrace("LeftEyePhoto: SurfaceHolder erzeugt\n");
+        } catch(Exception e) {
+            StackTraceElement se = e.getStackTrace()[0];
+            myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            Helper.showTraceDialog(myApp, this.getActivity());
         }
-        me=this;
     }
 
     public void onClick(View view, final String filename) {
-        camera.takePicture(new Camera.ShutterCallback() {
+        try {
+            myApp.appendTrace("LeftEyePhoto: Photo Start\n");
+            camera.takePicture(new Camera.ShutterCallback() {
 
-            @Override
-            public void onShutter() {
-                AudioManager meng = (AudioManager) me.getActivity().getSystemService(Context.AUDIO_SERVICE);
-                int volume = meng.getStreamVolume( AudioManager.STREAM_NOTIFICATION);
+                @Override
+                public void onShutter() {
+                    try {
+                        AudioManager meng = (AudioManager) me.getActivity().getSystemService(Context.AUDIO_SERVICE);
+                        int volume = meng.getStreamVolume(AudioManager.STREAM_NOTIFICATION);
 
-                if (volume != 0)
-                {
-                    if (_shootMP == null)
-                        _shootMP = MediaPlayer.create(me.getActivity(), Uri.parse("file:///system/media/audio/ui/camera_click.ogg"));
-                    if (_shootMP != null)
-                        _shootMP.start();
-                }            }
-        }, null, new Camera.PictureCallback() {
+                        if (volume != 0) {
+                            if (_shootMP == null)
+                                _shootMP = MediaPlayer.create(me.getActivity(), Uri.parse("file:///system/media/audio/ui/camera_click.ogg"));
+                            if (_shootMP != null)
+                                _shootMP.start();
+                        }
+                    } catch(Exception e) {
+                        StackTraceElement se = e.getStackTrace()[0];
+                        myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+                        Helper.showTraceDialog(myApp, me.getActivity());
+                    }
+                }
+            }, null, new Camera.PictureCallback() {
 
-            @Override
-            public void onPictureTaken(byte[] bytes, Camera camera) {
-                File pictureFileDir = Helper.getDir();
+                @Override
+                public void onPictureTaken(byte[] bytes, Camera camera) {
+                    try {
+                        myApp.appendTrace("LeftEyePhoto: Photo speichern Start\n");
+                        File pictureFileDir = Helper.getDir();
 
-                if (!pictureFileDir.exists() && !pictureFileDir.mkdirs()) {
+                        if (!pictureFileDir.exists() && !pictureFileDir.mkdirs()) {
 
-                    Toast.makeText(getActivity(), "Can't create directory to save image.",
-                            Toast.LENGTH_LONG).show();
-                    return;
+                            Toast.makeText(getActivity(), "Can't create directory to save image.",
+                                    Toast.LENGTH_LONG).show();
+                            return;
+
+                        }
+
+                        String photoFile = pictureFileDir.getPath() + File.separator + filename + "_left.jpg";
+
+                        File pictureFile = new File(photoFile);
+
+                        try {
+                            FileOutputStream fos = new FileOutputStream(pictureFile);
+                            fos.write(bytes);
+                            fos.close();
+                            //Toast.makeText(context, "New Image saved:" + photoFile, Toast.LENGTH_LONG).show();
+                            Quick3DMain actMain = (Quick3DMain) getActivity();
+
+                            myApp.appendTrace("LeftEyePhoto: Photo speichern Ende\n");
+                            actMain.callbackAfterPictureSaved();
+                        } catch (Exception error) {
+                            Toast.makeText(getActivity(), "Image could not be saved.",
+                                    Toast.LENGTH_LONG).show();
+                            StackTraceElement se = error.getStackTrace()[0];
+                            myApp.prependTrace(error.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+                            Helper.showTraceDialog(myApp, me.getActivity());
+                        }
+                    } catch(Exception e) {
+                        StackTraceElement se = e.getStackTrace()[0];
+                        myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+                        Helper.showTraceDialog(myApp, me.getActivity());
+                    }
 
                 }
-
-                String photoFile = pictureFileDir.getPath() + File.separator + filename + "_left.jpg";
-
-                File pictureFile = new File(photoFile);
-
-                try {
-                    FileOutputStream fos = new FileOutputStream(pictureFile);
-                    fos.write(bytes);
-                    fos.close();
-                    //Toast.makeText(context, "New Image saved:" + photoFile, Toast.LENGTH_LONG).show();
-                    Quick3DMain actMain = (Quick3DMain) getActivity();
-                    actMain.callbackAfterPictureSaved();
-                } catch (Exception error) {
-                    Toast.makeText(getActivity(), "Image could not be saved.",
-                            Toast.LENGTH_LONG).show();
-                }
-
-            }
-        });
+            });
+        } catch(Exception e) {
+            StackTraceElement se = e.getStackTrace()[0];
+            myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            Helper.showTraceDialog(myApp, this.getActivity());
+        }
     }
 
     @Override
@@ -129,41 +164,49 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
 
     }
     public void showOnSurface(SurfaceHolder sh) {
-        cameraId = findBackFacingCamera();
-        if (cameraId < 0) {
-            Toast.makeText(getActivity(), "No back facing camera found.",
-                    Toast.LENGTH_LONG).show();
-        } else {
-            camera = Camera.open(cameraId);
-            try {
-                Helper.setCameraDisplayOrientation(getActivity(), cameraId, camera);
-                //camera.setDisplayOrientation(90);
+        try {
+            myApp.appendTrace("LeftEyePhoto: Preview auf Surface anzeigen Start\n");
+            cameraId = findBackFacingCamera();
+            if (cameraId < 0) {
+                Toast.makeText(getActivity(), "No back facing camera found.",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                camera = Camera.open(cameraId);
+                try {
+                    Helper.setCameraDisplayOrientation(getActivity(), cameraId, camera);
+                    //camera.setDisplayOrientation(90);
 
-                Camera.Parameters params = camera.getParameters();
+                    Camera.Parameters params = camera.getParameters();
 
-                Display display = getActivity().getWindowManager().getDefaultDisplay();
-                Point size = new Point();
-                display.getRealSize(size);
-                int width = size.x;
-                int height = size.y;
-                float ratio = height / (float)width;
+                    Display display = getActivity().getWindowManager().getDefaultDisplay();
+                    Point size = new Point();
+                    display.getRealSize(size);
+                    int width = size.x;
+                    int height = size.y;
+                    float ratio = height / (float) width;
 
-                List<Camera.Size> sizeList = params.getSupportedPictureSizes();
-                int chosenSize = Helper.getPictureSizeIndexForHeight(sizeList, 800, ratio);
-                params.setPictureSize(sizeList.get(chosenSize).width, sizeList.get(chosenSize).height);
+                    List<Camera.Size> sizeList = params.getSupportedPictureSizes();
+                    int chosenSize = Helper.getPictureSizeIndexForHeight(sizeList, 800, ratio);
+                    params.setPictureSize(sizeList.get(chosenSize).width, sizeList.get(chosenSize).height);
 
-                Helper.setRotationParameter(getActivity(), cameraId, params);
+                    Helper.setRotationParameter(getActivity(), cameraId, params);
 
-                camera.setParameters(params);
+                    camera.setParameters(params);
 
-                camera.setPreviewDisplay(sh);
-                camera.startPreview();
-            } catch (IOException e) {
-                e.printStackTrace();
+                    camera.setPreviewDisplay(sh);
+                    camera.startPreview();
+                    myApp.appendTrace("LeftEyePhoto: Preview auf Surface anzeigen Ende\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+            Toast.makeText(getActivity(), getString(R.string.left_photo_tap), Toast.LENGTH_LONG)
+                    .show();
+        } catch(Exception e) {
+            StackTraceElement se = e.getStackTrace()[0];
+            myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            Helper.showTraceDialog(myApp, this.getActivity());
         }
-        Toast.makeText(getActivity(), getString(R.string.left_photo_tap), Toast.LENGTH_LONG)
-                .show();
     }
 
     private int findBackFacingCamera() {

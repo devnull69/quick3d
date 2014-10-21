@@ -21,29 +21,44 @@ public class Quick3DMain extends Activity {
     private LeftEyePhoto lep;
     private RightEyePhoto rep;
     private Fragment currentFragment;
+    Q3DApplication myApp;
+    String _trace;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quick3dmain);
+        try {
+            super.onCreate(savedInstanceState);
 
-        lep = new LeftEyePhoto();
+            myApp = ((Q3DApplication) this.getApplicationContext());
+            myApp.setTrace("");
 
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.add(R.id.flFragmentContainer, lep);
-        ft.commit();
+            setContentView(R.layout.activity_quick3dmain);
 
-        currentFragment = lep;
+            myApp.appendTrace("Quick3DMain: Content View gesetzt\n");
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddkkmmss");
-        String date = dateFormat.format(new Date());
-        filename = "Picture_" + date;
+            lep = new LeftEyePhoto();
 
-        Bundle showFotoParameter = new Bundle();
-        showFotoParameter.putString("filename", filename);
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.add(R.id.flFragmentContainer, lep);
+            ft.commit();
 
-        rep = (RightEyePhoto) Fragment.instantiate(this, RightEyePhoto.class.getName(), showFotoParameter);
+            currentFragment = lep;
 
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddkkmmss");
+            String date = dateFormat.format(new Date());
+            filename = "Picture_" + date;
+
+            Bundle showFotoParameter = new Bundle();
+            showFotoParameter.putString("filename", filename);
+
+            rep = (RightEyePhoto) Fragment.instantiate(this, RightEyePhoto.class.getName(), showFotoParameter);
+
+            myApp.appendTrace("Quick3DMain: Fragments instantiiert\n");
+        } catch(Exception e) {
+            StackTraceElement se = e.getStackTrace()[0];
+            myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            Helper.showTraceDialog(myApp, this);
+        }
     }
 
     @Override
@@ -60,26 +75,40 @@ public class Quick3DMain extends Activity {
     }
 
     public void onClick(View view) {
-        if(currentFragment instanceof LeftEyePhoto) {
-            ((LeftEyePhoto) currentFragment).onClick(view, filename);
-        } else if(currentFragment instanceof RightEyePhoto){
-            ((RightEyePhoto) currentFragment).onClick(view, filename);
+        try {
+            myApp.appendTrace("Quick3DMain: Photo geklickt\n");
+            if (currentFragment instanceof LeftEyePhoto) {
+                ((LeftEyePhoto) currentFragment).onClick(view, filename);
+            } else if (currentFragment instanceof RightEyePhoto) {
+                ((RightEyePhoto) currentFragment).onClick(view, filename);
+            }
+        } catch(Exception e) {
+            StackTraceElement se = e.getStackTrace()[0];
+            myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            Helper.showTraceDialog(myApp, this);
         }
     }
 
     public void callbackAfterPictureSaved() {
-        if(currentFragment instanceof LeftEyePhoto) {
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.flFragmentContainer, rep);
-            currentFragment = rep;
-            ft.commit();
-        } else if(currentFragment instanceof RightEyePhoto){
-            Intent intent = new Intent(this, ShowFotos.class);
-            intent.putExtra(FILENAME_MESSAGE, filename);
-            startActivity(intent);
-            finish();
+        try {
+            myApp.appendTrace("Quick3DMain: Nach Photo speichern\n");
+            if (currentFragment instanceof LeftEyePhoto) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.flFragmentContainer, rep);
+                currentFragment = rep;
+                ft.commit();
+                myApp.appendTrace("Quick3DMain: Wechseln auf RightEyePhoto\n");
+            } else if (currentFragment instanceof RightEyePhoto) {
+                Intent intent = new Intent(this, ShowFotos.class);
+                intent.putExtra(FILENAME_MESSAGE, filename);
+                startActivity(intent);
+                myApp.appendTrace("Quick3DMain: Wechseln auf ShowFotos. Finish\n");
+                finish();
+            }
+        } catch(Exception e) {
+            StackTraceElement se = e.getStackTrace()[0];
+            myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            Helper.showTraceDialog(myApp, this);
         }
     }
-
-
 }

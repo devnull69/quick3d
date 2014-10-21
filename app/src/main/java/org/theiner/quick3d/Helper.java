@@ -1,6 +1,9 @@
 package org.theiner.quick3d;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Application;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -87,16 +90,14 @@ public class Helper {
         int toRotate = neededRotation(ff);
         result = BitmapFactory.decodeFile(ff.getAbsolutePath());
         if(toRotate != 0) {
-            Matrix m = new Matrix();
-            m.postRotate(toRotate);
-            if(toRotate == 180) { // bei 0 oder 180 muss die Breite nicht mit der Höhe getauscht werden
+            try {
+                Matrix m = new Matrix();
+                m.postRotate(toRotate);
                 result = Bitmap.createBitmap(result,
                         0, 0, result.getWidth(), result.getHeight(),
                         m, true);
-            } else {
-                result = Bitmap.createBitmap(result,
-                        0, 0, result.getHeight(), result.getWidth(),
-                        m, true);
+            } catch(Exception e) {
+                e.printStackTrace();
             }
         }
         return result;
@@ -127,5 +128,18 @@ public class Helper {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public static void showTraceDialog(Q3DApplication myApp, Activity fromActivity) {
+        new AlertDialog.Builder(fromActivity)
+                .setTitle("Exception + Trace")
+                .setMessage(myApp.getTrace())
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
+
     }
 }
