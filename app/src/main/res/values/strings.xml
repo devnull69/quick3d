@@ -2,14 +2,8 @@
 <resources>
 
     <string name="app_name">Quick3D</string>
-    <string name="exit">Beenden</string>
     <string name="left_photo_tap">Tippen, um Foto für das linke Auge zu schießen</string>
     <string name="right_photo_tap">Ausrichten, dann tippen, um Foto für das rechte Auge zu schießen</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_show_fotos">ShowFotos</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_show_anaglyph">ShowAnaglyph</string>
-    <string name="title_activity_show_wiggle">ShowWiggle</string>
+    <string name="anaglyph_saved">Das Anaglyph wurde gespeichert.</string>
 
 </resources>

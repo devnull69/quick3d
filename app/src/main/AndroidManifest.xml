@@ -26,17 +26,14 @@
         </activity>
         <activity
             android:name=".ShowFotos"
-            android:label="@string/title_activity_show_fotos"
             android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name=".ShowAnaglyph"
-            android:label="@string/title_activity_show_anaglyph"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".ShowWiggle"
-            android:label="@string/title_activity_show_wiggle"
             android:screenOrientation="portrait" >
         </activity>
     </application>

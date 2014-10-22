@@ -10,8 +10,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 
 public class ShowAnaglyph extends Activity {
@@ -20,6 +23,7 @@ public class ShowAnaglyph extends Activity {
     private Bitmap zielBitmap;
     private Bitmap rotBitmap;
     Q3DApplication myApp;
+    ImageView ivSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +83,10 @@ public class ShowAnaglyph extends Activity {
 
             ImageView ivWiggle = (ImageView) findViewById(R.id.ivWiggle);
             ivWiggle.setImageResource(R.drawable.icon_wiggle);
+
+            ivSave = (ImageView) findViewById(R.id.ivSave);
+            ivSave.setImageResource(R.drawable.icon_save);
+
         } catch(Exception e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
@@ -90,20 +98,12 @@ public class ShowAnaglyph extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.show_anaglyph, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     public void onClose(View view) {
@@ -129,6 +129,32 @@ public class ShowAnaglyph extends Activity {
             intent.putExtra(Quick3DMain.FILENAME_MESSAGE, _filename);
             startActivity(intent);
             finish();
+        } catch(Exception e) {
+            StackTraceElement se = e.getStackTrace()[0];
+            myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            Helper.showTraceDialog(myApp, this);
+        }
+    }
+
+    public void onSave(View view) {
+        try {
+            File pictureFileDir = Helper.getDir();
+            String photoFile = pictureFileDir.getPath() + File.separator + _filename + "_anaglyph.jpg";
+
+            File pictureFile = new File(photoFile);
+
+            OutputStream fOutputStream = new FileOutputStream(pictureFile);
+
+            zielBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOutputStream);
+
+            fOutputStream.flush();
+            fOutputStream.close();
+
+            ivSave.setVisibility(View.INVISIBLE);
+
+            Toast.makeText(this, getString(R.string.anaglyph_saved),
+                    Toast.LENGTH_LONG).show();
+
         } catch(Exception e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
