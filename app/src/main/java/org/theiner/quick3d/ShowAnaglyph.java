@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +32,16 @@ public class ShowAnaglyph extends Activity {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_show_anaglyph);
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                View decorView = getWindow().getDecorView();
+
+                int uiOptions = decorView.getSystemUiVisibility();
+                uiOptions = uiOptions | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+                uiOptions = uiOptions | View.SYSTEM_UI_FLAG_FULLSCREEN;
+                uiOptions = uiOptions | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                decorView.setSystemUiVisibility(uiOptions);
+            }
 
             Intent intent = getIntent();
             _filename = intent.getStringExtra(Quick3DMain.FILENAME_MESSAGE);
@@ -84,12 +95,14 @@ public class ShowAnaglyph extends Activity {
             ImageView ivWiggle = (ImageView) findViewById(R.id.ivWiggle);
             ivWiggle.setImageResource(R.drawable.icon_wiggle);
 
-            ivSave = (ImageView) findViewById(R.id.ivSave);
-            ivSave.setImageResource(R.drawable.icon_save);
+            if(!myApp.getAnaglyphSaved()) {
+                ivSave = (ImageView) findViewById(R.id.ivSave);
+                ivSave.setImageResource(R.drawable.icon_save);
+            }
 
         } catch(Exception e) {
             StackTraceElement se = e.getStackTrace()[0];
-            myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);
         }
     }
@@ -118,7 +131,7 @@ public class ShowAnaglyph extends Activity {
             finish();
         } catch(Exception e) {
             StackTraceElement se = e.getStackTrace()[0];
-            myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);
         }
     }
@@ -131,7 +144,7 @@ public class ShowAnaglyph extends Activity {
             finish();
         } catch(Exception e) {
             StackTraceElement se = e.getStackTrace()[0];
-            myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);
         }
     }
@@ -152,12 +165,14 @@ public class ShowAnaglyph extends Activity {
 
             ivSave.setVisibility(View.INVISIBLE);
 
+            myApp.setAnaglyphSaved(true);
+
             Toast.makeText(this, getString(R.string.anaglyph_saved),
                     Toast.LENGTH_LONG).show();
 
         } catch(Exception e) {
             StackTraceElement se = e.getStackTrace()[0];
-            myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);
         }
     }

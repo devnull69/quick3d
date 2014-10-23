@@ -70,7 +70,7 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
             myApp.appendTrace("LeftEyePhoto: SurfaceHolder erzeugt\n");
         } catch(Exception e) {
             StackTraceElement se = e.getStackTrace()[0];
-            myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this.getActivity());
         }
     }
@@ -94,7 +94,7 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
                         }
                     } catch(Exception e) {
                         StackTraceElement se = e.getStackTrace()[0];
-                        myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+                        myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
                         Helper.showTraceDialog(myApp, me.getActivity());
                     }
                 }
@@ -131,12 +131,12 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
                             Toast.makeText(getActivity(), "Image could not be saved.",
                                     Toast.LENGTH_LONG).show();
                             StackTraceElement se = error.getStackTrace()[0];
-                            myApp.prependTrace(error.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+                            myApp.prependTrace(error.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
                             Helper.showTraceDialog(myApp, me.getActivity());
                         }
                     } catch(Exception e) {
                         StackTraceElement se = e.getStackTrace()[0];
-                        myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+                        myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
                         Helper.showTraceDialog(myApp, me.getActivity());
                     }
 
@@ -144,7 +144,7 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
             });
         } catch(Exception e) {
             StackTraceElement se = e.getStackTrace()[0];
-            myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this.getActivity());
         }
     }
@@ -204,7 +204,7 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
                     .show();
         } catch(Exception e) {
             StackTraceElement se = e.getStackTrace()[0];
-            myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this.getActivity());
         }
     }

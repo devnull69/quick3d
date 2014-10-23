@@ -7,6 +7,7 @@ import android.app.Application;
  */
 public class Q3DApplication extends Application {
     private String trace;
+    private Boolean anaglyphSaved = false;
 
     public String getTrace() {
         return trace;
@@ -21,4 +22,12 @@ public class Q3DApplication extends Application {
     }
 
     public void prependTrace(String s) { trace = s + trace;}
+
+    public Boolean getAnaglyphSaved() {
+        return anaglyphSaved;
+    }
+
+    public void setAnaglyphSaved(Boolean b) {
+        anaglyphSaved = b;
+    }
 }

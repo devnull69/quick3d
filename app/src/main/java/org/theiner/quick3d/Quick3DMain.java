@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,6 +35,16 @@ public class Quick3DMain extends Activity {
 
             setContentView(R.layout.activity_quick3dmain);
 
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                View decorView = getWindow().getDecorView();
+
+                int uiOptions = decorView.getSystemUiVisibility();
+                uiOptions = uiOptions | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+                uiOptions = uiOptions | View.SYSTEM_UI_FLAG_FULLSCREEN;
+                uiOptions = uiOptions | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                decorView.setSystemUiVisibility(uiOptions);
+            }
+
             myApp.appendTrace("Quick3DMain: Content View gesetzt\n");
 
             lep = new LeftEyePhoto();
@@ -56,7 +67,7 @@ public class Quick3DMain extends Activity {
             myApp.appendTrace("Quick3DMain: Fragments instantiiert\n");
         } catch(Exception e) {
             StackTraceElement se = e.getStackTrace()[0];
-            myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);
         }
     }
@@ -77,7 +88,7 @@ public class Quick3DMain extends Activity {
             }
         } catch(Exception e) {
             StackTraceElement se = e.getStackTrace()[0];
-            myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);
         }
     }
@@ -100,7 +111,7 @@ public class Quick3DMain extends Activity {
             }
         } catch(Exception e) {
             StackTraceElement se = e.getStackTrace()[0];
-            myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);
         }
     }

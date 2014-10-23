@@ -79,7 +79,7 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
             myApp.appendTrace("RightEyePhoto: SurfaceHolder erzeugt\n");
         } catch(Exception e) {
             StackTraceElement se = e.getStackTrace()[0];
-            myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this.getActivity());
         }
     }
@@ -137,7 +137,7 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
             });
         } catch(Exception e) {
             StackTraceElement se = e.getStackTrace()[0];
-            myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this.getActivity());
         }
     }
@@ -205,7 +205,7 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
                     }
                 } catch (IOException e) {
                     StackTraceElement se = e.getStackTrace()[0];
-                    myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+                    myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
                     Helper.showTraceDialog(myApp, this.getActivity());
                 }
             }
@@ -213,7 +213,7 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
                     .show();
         } catch(Exception e) {
             StackTraceElement se = e.getStackTrace()[0];
-            myApp.prependTrace(e.getMessage() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this.getActivity());
         }
     }
