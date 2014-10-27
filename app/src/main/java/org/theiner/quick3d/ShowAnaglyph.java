@@ -46,43 +46,10 @@ public class ShowAnaglyph extends Activity {
             Intent intent = getIntent();
             _filename = intent.getStringExtra(Quick3DMain.FILENAME_MESSAGE);
 
-            File pictureFileDir = Helper.getDir();
+            // wait if Anagylph thread is not yet ready
+            while(myApp.getAnaglyphBitmap() == null);
 
-            String fullPath = pictureFileDir.getPath() + File.separator + _filename + "_right.jpg";
-
-            File pictureFile = new File(fullPath);
-
-            if (pictureFile.exists()) {
-                zielBitmap = Helper.getRotatedBitmap(pictureFile);
-                zielBitmap = zielBitmap.copy(zielBitmap.getConfig(), true);
-            }
-
-            fullPath = pictureFileDir.getPath() + File.separator + _filename + "_left.jpg";
-
-            pictureFile = new File(fullPath);
-
-            if (pictureFile.exists()) {
-                rotBitmap = Helper.getRotatedBitmap(pictureFile);
-            }
-
-            int imgWidth = zielBitmap.getWidth();
-            int imgHeight = zielBitmap.getHeight();
-
-            int[] zielpixels = new int[imgHeight * imgWidth];
-            int[] redpixels = new int[imgHeight * imgWidth];
-            zielBitmap.getPixels(zielpixels, 0, imgWidth, 0, 0, imgWidth, imgHeight);
-            rotBitmap.getPixels(redpixels, 0, imgWidth, 0, 0, imgWidth, imgHeight);
-
-            for (int i = 0; i < imgHeight * imgWidth; i++) {
-                try {
-                    zielpixels[i] = Color.argb(Color.alpha(zielpixels[i]), Color.red(redpixels[i]), Color.green(zielpixels[i]), Color.blue(zielpixels[i]));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            zielBitmap.setPixels(zielpixels, 0, imgWidth, 0, 0, imgWidth, imgHeight);
-
+            zielBitmap = myApp.getAnaglyphBitmap();
             ImageView ivAnaglyph = (ImageView) findViewById(R.id.ivAnaglyph);
             ivAnaglyph.setImageBitmap(zielBitmap);
 

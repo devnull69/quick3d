@@ -46,24 +46,9 @@ public class ShowWiggle extends Activity {
             Intent intent = getIntent();
             _filename = intent.getStringExtra(Quick3DMain.FILENAME_MESSAGE);
 
-            File pictureFileDir = Helper.getDir();
+            rightBitmap = myApp.getRightEyeBitmap();
 
-            String fullPath = pictureFileDir.getPath() + File.separator + _filename + "_right.jpg";
-
-            File pictureFile = new File(fullPath);
-
-            if (pictureFile.exists()) {
-                rightBitmap = Helper.getRotatedBitmap(pictureFile);
-            }
-
-            fullPath = pictureFileDir.getPath() + File.separator + _filename + "_left.jpg";
-
-            pictureFile = new File(fullPath);
-
-            if (pictureFile.exists()) {
-                leftBitmap = Helper.getRotatedBitmap(pictureFile);
-            }
-
+            leftBitmap = myApp.getLeftEyeBitmap();
             ImageView ivClose = (ImageView) findViewById(R.id.ivClose);
             ivClose.setImageResource(R.drawable.icon_close);
 

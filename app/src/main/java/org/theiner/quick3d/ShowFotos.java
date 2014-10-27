@@ -59,29 +59,13 @@ public class ShowFotos extends Activity {
 
             myApp.appendTrace("ShowFotos: Image Views gefunden.\n");
 
-            File pictureFileDir = Helper.getDir();
-
-            String fullPath = pictureFileDir.getPath() + File.separator + _filename + "_right.jpg";
-
-            File pictureFile = new File(fullPath);
-
-            if (pictureFile.exists()) {
-                firstBitmap = Helper.getRotatedBitmap(pictureFile);
-
-                ivLeft.setImageBitmap(firstBitmap);
-            }
+            firstBitmap = myApp.getRightEyeBitmap();
+            ivLeft.setImageBitmap(firstBitmap);
 
             myApp.appendTrace("ShowFotos: Rechtes Foto eingebunden.\n");
 
-            fullPath = pictureFileDir.getPath() + File.separator + _filename + "_left.jpg";
-
-            pictureFile = new File(fullPath);
-
-            if (pictureFile.exists()) {
-                secondBitmap = Helper.getRotatedBitmap(pictureFile);
-
-                ivRight.setImageBitmap(secondBitmap);
-            }
+            secondBitmap = myApp.getLeftEyeBitmap();
+            ivRight.setImageBitmap(secondBitmap);
 
             myApp.appendTrace("ShowFotos: Linkes Foto eingebunden.\n");
 

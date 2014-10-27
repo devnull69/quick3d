@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.hardware.Camera;
 import android.media.AudioManager;
@@ -34,7 +35,6 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
     private ImageView showFotoView;
     private Camera camera;
     private int cameraId = 0;
-    private String _filename;
     RightEyePhoto me;
     MediaPlayer _shootMP;
     Q3DApplication myApp;
@@ -63,9 +63,6 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
             super.onActivityCreated(savedInstanceState);
 
             me = this;
-
-            _filename = getArguments().getString("filename");
-
 
             // do we have a camera?
             if (!getActivity().getPackageManager()
@@ -106,33 +103,39 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
                 @Override
                 public void onPictureTaken(byte[] bytes, Camera camera) {
                     myApp.appendTrace("RightEyePhoto: Photo speichern Start\n");
-                    File pictureFileDir = Helper.getDir();
+                    myApp.setRightEyeBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+                    Quick3DMain actMain = (Quick3DMain) getActivity();
 
-                    if (!pictureFileDir.exists() && !pictureFileDir.mkdirs()) {
+                    myApp.appendTrace("RightEyePhoto: Photo speichern Ende, Starte Thread für Anaglyphberechnung\n");
 
-                        Toast.makeText(getActivity(), "Can't create directory to save image.",
-                                Toast.LENGTH_LONG).show();
-                        return;
+                    new Thread(new Runnable() {
+                        public void run() {
+                            Bitmap zielBitmap = myApp.getRightEyeBitmap();
+                            zielBitmap = zielBitmap.copy(zielBitmap.getConfig(), true);
 
-                    }
+                            Bitmap rotBitmap = myApp.getLeftEyeBitmap();
+                            int imgWidth = zielBitmap.getWidth();
+                            int imgHeight = zielBitmap.getHeight();
 
-                    String photoFile = pictureFileDir.getPath() + File.separator + filename + "_right.jpg";
+                            int[] zielpixels = new int[imgHeight * imgWidth];
+                            int[] redpixels = new int[imgHeight * imgWidth];
+                            zielBitmap.getPixels(zielpixels, 0, imgWidth, 0, 0, imgWidth, imgHeight);
+                            rotBitmap.getPixels(redpixels, 0, imgWidth, 0, 0, imgWidth, imgHeight);
 
-                    File pictureFile = new File(photoFile);
+                            for (int i = 0; i < imgHeight * imgWidth; i++) {
+                                try {
+                                    zielpixels[i] = Color.argb(Color.alpha(zielpixels[i]), Color.red(redpixels[i]), Color.green(zielpixels[i]), Color.blue(zielpixels[i]));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
 
-                    try {
-                        FileOutputStream fos = new FileOutputStream(pictureFile);
-                        fos.write(bytes);
-                        fos.close();
-                        //Toast.makeText(context, "New Image saved:" + photoFile, Toast.LENGTH_LONG).show();
-                        Quick3DMain actMain = (Quick3DMain) getActivity();
-                        myApp.appendTrace("RightEyePhoto: Photo speichern Ende\n");
-                        actMain.callbackAfterPictureSaved();
-                    } catch (Exception error) {
-                        Toast.makeText(getActivity(), "Image could not be saved.",
-                                Toast.LENGTH_LONG).show();
-                    }
+                            zielBitmap.setPixels(zielpixels, 0, imgWidth, 0, 0, imgWidth, imgHeight);
+                            myApp.setAnaglyphBitmap(zielBitmap);
+                        }
+                    }).start();
 
+                    actMain.callbackAfterPictureSaved();
                 }
             });
         } catch(Exception e) {
@@ -191,18 +194,9 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
 
                     myApp.appendTrace("RightEyePhoto: Preview auf Surface anzeigen Ende\n");
 
-                    File pictureFileDir = Helper.getDir();
-
-                    String fullPath = pictureFileDir.getPath() + File.separator + _filename + "_left.jpg";
-
-                    File pictureFile = new File(fullPath);
-
-                    if (pictureFile.exists()) {
-                        Bitmap myBitmap = Helper.getRotatedBitmap(pictureFile);
-                        showFotoView.setImageBitmap(myBitmap);
-                        showFotoView.setAlpha(100);
-                        myApp.appendTrace("RightEyePhoto: Overlay linkes Photo fertig\n");
-                    }
+                    showFotoView.setImageBitmap(myApp.getLeftEyeBitmap());
+                    showFotoView.setAlpha(100);
+                    myApp.appendTrace("RightEyePhoto: Overlay linkes Photo fertig\n");
                 } catch (IOException e) {
                     StackTraceElement se = e.getStackTrace()[0];
                     myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");

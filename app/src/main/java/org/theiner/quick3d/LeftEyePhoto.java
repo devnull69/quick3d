@@ -3,6 +3,7 @@ package org.theiner.quick3d;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.hardware.Camera;
 import android.media.AudioManager;
@@ -104,36 +105,12 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
                 public void onPictureTaken(byte[] bytes, Camera camera) {
                     try {
                         myApp.appendTrace("LeftEyePhoto: Photo speichern Start\n");
-                        File pictureFileDir = Helper.getDir();
 
-                        if (!pictureFileDir.exists() && !pictureFileDir.mkdirs()) {
+                        myApp.setLeftEyeBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+                        Quick3DMain actMain = (Quick3DMain) getActivity();
 
-                            Toast.makeText(getActivity(), "Can't create directory to save image.",
-                                    Toast.LENGTH_LONG).show();
-                            return;
-
-                        }
-
-                        String photoFile = pictureFileDir.getPath() + File.separator + filename + "_left.jpg";
-
-                        File pictureFile = new File(photoFile);
-
-                        try {
-                            FileOutputStream fos = new FileOutputStream(pictureFile);
-                            fos.write(bytes);
-                            fos.close();
-                            //Toast.makeText(context, "New Image saved:" + photoFile, Toast.LENGTH_LONG).show();
-                            Quick3DMain actMain = (Quick3DMain) getActivity();
-
-                            myApp.appendTrace("LeftEyePhoto: Photo speichern Ende\n");
-                            actMain.callbackAfterPictureSaved();
-                        } catch (Exception error) {
-                            Toast.makeText(getActivity(), "Image could not be saved.",
-                                    Toast.LENGTH_LONG).show();
-                            StackTraceElement se = error.getStackTrace()[0];
-                            myApp.prependTrace(error.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
-                            Helper.showTraceDialog(myApp, me.getActivity());
-                        }
+                        myApp.appendTrace("LeftEyePhoto: Photo speichern Ende\n");
+                        actMain.callbackAfterPictureSaved();
                     } catch(Exception e) {
                         StackTraceElement se = e.getStackTrace()[0];
                         myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");

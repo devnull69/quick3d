@@ -23,7 +23,6 @@ public class Quick3DMain extends Activity {
     private RightEyePhoto rep;
     private Fragment currentFragment;
     Q3DApplication myApp;
-    String _trace;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,10 +58,7 @@ public class Quick3DMain extends Activity {
             String date = dateFormat.format(new Date());
             filename = "Picture_" + date;
 
-            Bundle showFotoParameter = new Bundle();
-            showFotoParameter.putString("filename", filename);
-
-            rep = (RightEyePhoto) Fragment.instantiate(this, RightEyePhoto.class.getName(), showFotoParameter);
+            rep = new RightEyePhoto();
 
             myApp.appendTrace("Quick3DMain: Fragments instantiiert\n");
         } catch(Exception e) {
