@@ -1,5 +1,6 @@
 package org.theiner.quick3d;
 
+import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -11,6 +12,7 @@ import android.hardware.Camera;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -159,6 +161,7 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i2, int i3) {
 
     }
+
     public void showOnSurface(SurfaceHolder sh) {
         try {
             myApp.appendTrace("RightEyePhoto: Preview auf Surface anzeigen Start\n");
@@ -176,7 +179,11 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
 
                     Display display = getActivity().getWindowManager().getDefaultDisplay();
                     Point size = new Point();
-                    display.getRealSize(size);
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                        display.getRealSize(size);
+                    } else {
+                        display.getSize(size);
+                    }
                     int width = size.x;
                     int height = size.y;
                     float ratio = height / (float) width;
