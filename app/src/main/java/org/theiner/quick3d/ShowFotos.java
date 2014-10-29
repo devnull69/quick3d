@@ -6,8 +6,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 
 public class ShowFotos extends Activity {
@@ -24,7 +32,9 @@ public class ShowFotos extends Activity {
     private Bitmap secondBitmap;
     private ImageView ivLeft;
     private ImageView ivRight;
+    private ImageView ivSave;
     Q3DApplication myApp;
+    private Boolean isCrossEyed = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +66,7 @@ public class ShowFotos extends Activity {
             ImageView ivSwitch = (ImageView) findViewById(R.id.ivSwitch);
             ImageView ivAnaglyph = (ImageView) findViewById(R.id.ivAnaglyph);
             ImageView ivWiggle = (ImageView) findViewById(R.id.ivWiggle);
+            ivSave = (ImageView) findViewById(R.id.ivSave);
 
             myApp.appendTrace("ShowFotos: Image Views gefunden.\n");
 
@@ -73,6 +84,12 @@ public class ShowFotos extends Activity {
             ivSwitch.setImageResource(R.drawable.icon_switch);
             ivAnaglyph.setImageResource(R.drawable.icon_anaglyph);
             ivWiggle.setImageResource(R.drawable.icon_wiggle);
+            ivSave.setImageResource(R.drawable.icon_save);
+
+            if(myApp.getCrossEyedSaved()) {
+                // Save Button verstecken
+                ivSave.setVisibility(View.INVISIBLE);
+            }
 
             myApp.appendTrace("ShowFotos: Image Resourcen gesetzt.\n");
 
@@ -109,6 +126,23 @@ public class ShowFotos extends Activity {
             secondBitmap = help;
             ivLeft.setImageBitmap(firstBitmap);
             ivRight.setImageBitmap(secondBitmap);
+
+            isCrossEyed = !isCrossEyed;
+
+            if(isCrossEyed) {
+                if(myApp.getCrossEyedSaved()) {
+                    ivSave.setVisibility(View.INVISIBLE);
+                } else {
+                    ivSave.setVisibility(View.VISIBLE);
+                }
+            } else {
+                if(myApp.getParallelEyedSaved()) {
+                    ivSave.setVisibility(View.INVISIBLE);
+                } else {
+                    ivSave.setVisibility(View.VISIBLE);
+                }
+            }
+
             myApp.appendTrace("ShowFotos: Seiten gewechselt\n");
         } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
@@ -143,5 +177,70 @@ public class ShowFotos extends Activity {
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);
         }
+    }
+
+    public void onSave(View view) {
+        try {
+            Display display = getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                display.getRealSize(size);
+            } else {
+                display.getSize(size);
+            }
+            Bitmap zielBitmap = Bitmap.createBitmap(size.x, size.y, Bitmap.Config.ARGB_8888);
+
+            int black = Color.argb(255, 0, 0, 0);
+            zielBitmap.eraseColor(black);
+
+            Canvas canvas = new Canvas(zielBitmap);
+            Rect srcRect = new Rect(0, 0, size.y, size.x);
+
+            double scaleFactor = (double)size.y/size.x;
+            // Linkes Image soll links von der Mitte plaziert sein
+            // Mitte der linken Hälfte = size.x / 4
+            // Hälfte von size.y weiter nach links = size.x/4 - size.y/2
+            int leftMargin = (int)Math.floor((double)size.x/4 - (size.y*scaleFactor)/2);
+            Rect dstRect = new Rect(leftMargin, 0, (int)Math.floor(size.y*scaleFactor) + leftMargin, size.y);
+            Paint paint = new Paint();
+            paint.setFilterBitmap(true);
+            paint.setDither(true);
+            canvas.drawBitmap(firstBitmap, srcRect, dstRect, paint);
+
+            // Rechtes Images genauso weit von der Mitte nach rechts verschieben
+            leftMargin = leftMargin + (int)Math.floor((double)size.x/2);
+            dstRect = new Rect(leftMargin, 0, (int)Math.floor(size.y*scaleFactor) + leftMargin, size.y);
+            canvas.drawBitmap(secondBitmap, srcRect, dstRect, paint);
+
+            String appendix = "_crosseyed.jpg";
+
+            if (!isCrossEyed) {
+                appendix = "_paralleleyed.jpg";
+            }
+
+            File pictureFileDir = Helper.getDir();
+            String photoFile = pictureFileDir.getPath() + File.separator + _filename + appendix;
+
+            File pictureFile = new File(photoFile);
+
+            OutputStream fOutputStream = new FileOutputStream(pictureFile);
+
+            zielBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOutputStream);
+
+            fOutputStream.flush();
+            fOutputStream.close();
+
+            if (isCrossEyed) {
+                myApp.setCrossEyedSaved(true);
+            } else {
+                myApp.setParallelEyedSaved(true);
+            }
+            ivSave.setVisibility(View.INVISIBLE);
+        } catch(Throwable e) {
+            StackTraceElement se = e.getStackTrace()[0];
+            myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            Helper.showTraceDialog(myApp, this);
+        }
+
     }
 }

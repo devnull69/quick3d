@@ -41,5 +41,12 @@
         android:id="@+id/ivWiggle"
         android:onClick="onWiggle" />
 
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="260dp"
+        android:id="@+id/ivSave"
+        android:onClick="onSave" />
+
 
 </RelativeLayout>

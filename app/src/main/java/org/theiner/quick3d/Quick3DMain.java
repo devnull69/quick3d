@@ -3,13 +3,22 @@ package org.theiner.quick3d;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -18,6 +27,7 @@ public class Quick3DMain extends Activity {
 
     public final static String DEBUG_TAG = "Quick3DMain";
     public final static String FILENAME_MESSAGE = "org.theiner.quick3d.filename";
+    public boolean isLandscape = false;
     private String filename = "";
     private LeftEyePhoto lep;
     private RightEyePhoto rep;
@@ -47,6 +57,7 @@ public class Quick3DMain extends Activity {
             myApp.appendTrace("Quick3DMain: Content View gesetzt\n");
 
             lep = new LeftEyePhoto();
+            rep = new RightEyePhoto();
 
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.add(R.id.flFragmentContainer, lep);
@@ -57,8 +68,6 @@ public class Quick3DMain extends Activity {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddkkmmss");
             String date = dateFormat.format(new Date());
             filename = "Picture_" + date;
-
-            rep = new RightEyePhoto();
 
             myApp.appendTrace("Quick3DMain: Fragments instantiiert\n");
         } catch(Throwable e) {
@@ -72,7 +81,6 @@ public class Quick3DMain extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;
     }
-
 
     public void onClick(View view) {
         try {

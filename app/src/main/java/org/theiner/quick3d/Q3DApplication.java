@@ -8,7 +8,11 @@ import android.graphics.Bitmap;
  */
 public class Q3DApplication extends Application {
     private String trace;
+
     private Boolean anaglyphSaved = false;
+    private Boolean crossEyedSaved = false;
+    private Boolean parallelEyedSaved = false;
+
     private Bitmap leftEyeBitmap = null;
     private Bitmap rightEyeBitmap = null;
     private Bitmap anaglyphBitmap = null;
@@ -58,5 +62,21 @@ public class Q3DApplication extends Application {
 
     public void setAnaglyphBitmap(Bitmap anaglyphBitmap) {
         this.anaglyphBitmap = anaglyphBitmap;
+    }
+
+    public Boolean getCrossEyedSaved() {
+        return crossEyedSaved;
+    }
+
+    public void setCrossEyedSaved(Boolean crossEyedSaved) {
+        this.crossEyedSaved = crossEyedSaved;
+    }
+
+    public Boolean getParallelEyedSaved() {
+        return parallelEyedSaved;
+    }
+
+    public void setParallelEyedSaved(Boolean parallelEyedSaved) {
+        this.parallelEyedSaved = parallelEyedSaved;
     }
 }
