@@ -67,7 +67,7 @@ public class ShowAnaglyph extends Activity {
                 ivSave.setImageResource(R.drawable.icon_save);
             }
 
-        } catch(Exception e) {
+        } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);
@@ -96,7 +96,7 @@ public class ShowAnaglyph extends Activity {
             intent.putExtra(Quick3DMain.FILENAME_MESSAGE, _filename);
             startActivity(intent);
             finish();
-        } catch(Exception e) {
+        } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);
@@ -109,7 +109,7 @@ public class ShowAnaglyph extends Activity {
             intent.putExtra(Quick3DMain.FILENAME_MESSAGE, _filename);
             startActivity(intent);
             finish();
-        } catch(Exception e) {
+        } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);
@@ -137,7 +137,7 @@ public class ShowAnaglyph extends Activity {
             Toast.makeText(this, getString(R.string.anaglyph_saved),
                     Toast.LENGTH_LONG).show();
 
-        } catch(Exception e) {
+        } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);

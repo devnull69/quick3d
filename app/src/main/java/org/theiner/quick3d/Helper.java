@@ -21,6 +21,7 @@ import java.util.List;
  * Created by TheineT on 22.09.2014.
  */
 public class Helper {
+
     public static void setCameraDisplayOrientation(Activity activity,
                                                    int cameraId, android.hardware.Camera camera) {
         android.hardware.Camera.CameraInfo info =
@@ -30,10 +31,18 @@ public class Helper {
                 .getRotation();
         int degrees = 0;
         switch (rotation) {
-            case Surface.ROTATION_0: degrees = 0; break;
-            case Surface.ROTATION_90: degrees = 90; break;
-            case Surface.ROTATION_180: degrees = 180; break;
-            case Surface.ROTATION_270: degrees = 270; break;
+            case Surface.ROTATION_0:
+                degrees = 0;
+                break;
+            case Surface.ROTATION_90:
+                degrees = 90;
+                break;
+            case Surface.ROTATION_180:
+                degrees = 180;
+                break;
+            case Surface.ROTATION_270:
+                degrees = 270;
+                break;
         }
 
         int result;
@@ -85,54 +94,21 @@ public class Helper {
         return new File(sdDir, "Quick3D");
     }
 
-    public static Bitmap getRotatedBitmap(File ff) {
-        Bitmap result;
-        int toRotate = neededRotation(ff);
-        result = BitmapFactory.decodeFile(ff.getAbsolutePath());
-        if(toRotate != 0) {
-            try {
+    public static Bitmap getRotatedBitmap(byte[] bildDaten) {
+        Bitmap result = BitmapFactory.decodeByteArray(bildDaten, 0, bildDaten.length);
+        if(result.getWidth() > result.getHeight()) {
                 Matrix m = new Matrix();
-                m.postRotate(toRotate);
+                m.postRotate(90);
                 result = Bitmap.createBitmap(result,
                         0, 0, result.getWidth(), result.getHeight(),
                         m, true);
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
         }
         return result;
     }
 
-    private static int neededRotation(File ff)
-    {
-        try
-        {
-
-            ExifInterface exif = new ExifInterface(ff.getAbsolutePath());
-            int orientation = exif.getAttributeInt(
-                    ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-
-            if (orientation == ExifInterface.ORIENTATION_ROTATE_270)
-            { return 270; }
-            if (orientation == ExifInterface.ORIENTATION_ROTATE_180)
-            { return 180; }
-            if (orientation == ExifInterface.ORIENTATION_ROTATE_90)
-            { return 90; }
-            return 0;
-
-        } catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
     public static void showTraceDialog(Q3DApplication myApp, Activity fromActivity) {
         new AlertDialog.Builder(fromActivity)
-                .setTitle("Exception + Trace")
+                .setTitle("Throwable + Trace")
                 .setMessage(myApp.getTrace())
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -140,6 +116,5 @@ public class Helper {
                     }
                 })
                 .show();
-
     }
 }

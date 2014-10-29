@@ -10,6 +10,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -69,7 +70,7 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
             }
             me = this;
             myApp.appendTrace("LeftEyePhoto: SurfaceHolder erzeugt\n");
-        } catch(Exception e) {
+        } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this.getActivity());
@@ -93,7 +94,7 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
                             if (_shootMP != null)
                                 _shootMP.start();
                         }
-                    } catch(Exception e) {
+                    } catch(Throwable e) {
                         StackTraceElement se = e.getStackTrace()[0];
                         myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
                         Helper.showTraceDialog(myApp, me.getActivity());
@@ -106,12 +107,12 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
                     try {
                         myApp.appendTrace("LeftEyePhoto: Photo speichern Start\n");
 
-                        myApp.setLeftEyeBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+                        myApp.setLeftEyeBitmap(Helper.getRotatedBitmap(bytes));
                         Quick3DMain actMain = (Quick3DMain) getActivity();
 
                         myApp.appendTrace("LeftEyePhoto: Photo speichern Ende\n");
                         actMain.callbackAfterPictureSaved();
-                    } catch(Exception e) {
+                    } catch(Throwable e) {
                         StackTraceElement se = e.getStackTrace()[0];
                         myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
                         Helper.showTraceDialog(myApp, me.getActivity());
@@ -119,7 +120,7 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
 
                 }
             });
-        } catch(Exception e) {
+        } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this.getActivity());
@@ -157,7 +158,11 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
 
                     Display display = getActivity().getWindowManager().getDefaultDisplay();
                     Point size = new Point();
-                    display.getRealSize(size);
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                        display.getRealSize(size);
+                    } else {
+                        display.getSize(size);
+                    }
                     int width = size.x;
                     int height = size.y;
                     float ratio = height / (float) width;
@@ -179,7 +184,7 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
             }
             Toast.makeText(getActivity(), getString(R.string.left_photo_tap), Toast.LENGTH_LONG)
                     .show();
-        } catch(Exception e) {
+        } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this.getActivity());

@@ -61,7 +61,7 @@ public class Quick3DMain extends Activity {
             rep = new RightEyePhoto();
 
             myApp.appendTrace("Quick3DMain: Fragments instantiiert\n");
-        } catch(Exception e) {
+        } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);
@@ -82,7 +82,7 @@ public class Quick3DMain extends Activity {
             } else if (currentFragment instanceof RightEyePhoto) {
                 ((RightEyePhoto) currentFragment).onClick(view, filename);
             }
-        } catch(Exception e) {
+        } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);
@@ -105,7 +105,7 @@ public class Quick3DMain extends Activity {
                 myApp.appendTrace("Quick3DMain: Wechseln auf ShowFotos. Finish\n");
                 finish();
             }
-        } catch(Exception e) {
+        } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);

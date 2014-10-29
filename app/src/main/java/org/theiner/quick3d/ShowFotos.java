@@ -76,7 +76,7 @@ public class ShowFotos extends Activity {
 
             myApp.appendTrace("ShowFotos: Image Resourcen gesetzt.\n");
 
-        } catch(Exception e) {
+        } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);
@@ -110,7 +110,7 @@ public class ShowFotos extends Activity {
             ivLeft.setImageBitmap(firstBitmap);
             ivRight.setImageBitmap(secondBitmap);
             myApp.appendTrace("ShowFotos: Seiten gewechselt\n");
-        } catch(Exception e) {
+        } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);
@@ -124,7 +124,7 @@ public class ShowFotos extends Activity {
             startActivity(intent);
             myApp.appendTrace("ShowFotos: Auf Anaglyph gewechselt. Finish\n");
             finish();
-        } catch(Exception e) {
+        } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);
@@ -138,7 +138,7 @@ public class ShowFotos extends Activity {
             startActivity(intent);
             myApp.appendTrace("ShowFotos: Auf Wiggle gewechselt. Finish\n");
             finish();
-        } catch(Exception e) {
+        } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);

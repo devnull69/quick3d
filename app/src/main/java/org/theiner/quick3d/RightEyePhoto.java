@@ -76,7 +76,7 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
                 sh.addCallback(this);
             }
             myApp.appendTrace("RightEyePhoto: SurfaceHolder erzeugt\n");
-        } catch(Exception e) {
+        } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this.getActivity());
@@ -105,7 +105,7 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
                 @Override
                 public void onPictureTaken(byte[] bytes, Camera camera) {
                     myApp.appendTrace("RightEyePhoto: Photo speichern Start\n");
-                    myApp.setRightEyeBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+                    myApp.setRightEyeBitmap(Helper.getRotatedBitmap(bytes));
                     Quick3DMain actMain = (Quick3DMain) getActivity();
 
                     myApp.appendTrace("RightEyePhoto: Photo speichern Ende, Starte Thread für Anaglyphberechnung\n");
@@ -127,7 +127,7 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
                             for (int i = 0; i < imgHeight * imgWidth; i++) {
                                 try {
                                     zielpixels[i] = Color.argb(Color.alpha(zielpixels[i]), Color.red(redpixels[i]), Color.green(zielpixels[i]), Color.blue(zielpixels[i]));
-                                } catch (Exception e) {
+                                } catch (Throwable e) {
                                     e.printStackTrace();
                                 }
                             }
@@ -140,7 +140,7 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
                     actMain.callbackAfterPictureSaved();
                 }
             });
-        } catch(Exception e) {
+        } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this.getActivity());
@@ -212,7 +212,7 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
             }
             Toast.makeText(getActivity(), getString(R.string.right_photo_tap), Toast.LENGTH_LONG)
                     .show();
-        } catch(Exception e) {
+        } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this.getActivity());

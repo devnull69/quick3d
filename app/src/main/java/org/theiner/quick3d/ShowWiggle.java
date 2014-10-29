@@ -80,7 +80,7 @@ public class ShowWiggle extends Activity {
                                     ivWiggle.setImageBitmap(leftBitmap);
                                     isLeft = true;
                                 }
-                            } catch(Exception e) {
+                            } catch(Throwable e) {
                                 StackTraceElement se = e.getStackTrace()[0];
                                 myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
                                 Helper.showTraceDialog(myApp, me);
@@ -91,7 +91,7 @@ public class ShowWiggle extends Activity {
             };
 
             myTimer.scheduleAtFixedRate(myTimerTask, 0, 150);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);
@@ -126,7 +126,7 @@ public class ShowWiggle extends Activity {
             intent.putExtra(Quick3DMain.FILENAME_MESSAGE, _filename);
             startActivity(intent);
             finish();
-        } catch(Exception e) {
+        } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);
@@ -141,7 +141,7 @@ public class ShowWiggle extends Activity {
             intent.putExtra(Quick3DMain.FILENAME_MESSAGE, _filename);
             startActivity(intent);
             finish();
-        } catch(Exception e) {
+        } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);
