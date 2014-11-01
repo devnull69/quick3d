@@ -33,7 +33,6 @@ com_crashlytics_export_strings.xml
 
 # User-specific configurations
 .idea/workspace.xml
-*.iml
 
 # OS-specific files
 Thumbs.db
