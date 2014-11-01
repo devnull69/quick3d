@@ -31,8 +31,5 @@ com_crashlytics_export_strings.xml
 # Signing files
 .signing/
 
-# User-specific configurations
-.idea/workspace.xml
-
 # OS-specific files
 Thumbs.db
