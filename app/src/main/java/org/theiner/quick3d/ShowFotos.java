@@ -219,6 +219,7 @@ public class ShowFotos extends Activity {
             }
 
             File pictureFileDir = Helper.getDir();
+            pictureFileDir.mkdirs();
             String photoFile = pictureFileDir.getPath() + File.separator + _filename + appendix;
 
             File pictureFile = new File(photoFile);

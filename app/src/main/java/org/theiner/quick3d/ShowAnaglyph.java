@@ -119,6 +119,7 @@ public class ShowAnaglyph extends Activity {
     public void onSave(View view) {
         try {
             File pictureFileDir = Helper.getDir();
+            pictureFileDir.mkdirs();
             String photoFile = pictureFileDir.getPath() + File.separator + _filename + "_anaglyph.jpg";
 
             File pictureFile = new File(photoFile);
