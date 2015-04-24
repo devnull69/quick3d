@@ -189,8 +189,6 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
                     camera.setPreviewDisplay(sh);
                     camera.startPreview();
 
-                    sendConfigData(camera);
-
                     myApp.appendTrace("LeftEyePhoto: Preview auf Surface anzeigen Ende\n");
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -229,54 +227,4 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
         super.onPause();
     }
 
-    public void sendConfigData(final Camera camera) {
-        final Activity me = this.getActivity();
-        new Thread(new Runnable() {
-            public void run() {
-                // Create a new HttpClient and Post Header
-                HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost("http://websocket.bplaced.net/Q3Dconfigs/saveConfigData.php");
-
-                try {
-                    // Add your data
-                    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(7);
-                    nameValuePairs.add(new BasicNameValuePair("Hersteller", Build.MANUFACTURER));
-                    nameValuePairs.add(new BasicNameValuePair("Marke", Build.MODEL));
-                    nameValuePairs.add(new BasicNameValuePair("Seriennummer", Build.SERIAL));
-                    Display display = getActivity().getWindowManager().getDefaultDisplay();
-                    Point size = new Point();
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                        display.getRealSize(size);
-                        nameValuePairs.add(new BasicNameValuePair("DisplaySizeMethode", "getRealSize"));
-                    } else {
-                        display.getSize(size);
-                        nameValuePairs.add(new BasicNameValuePair("DisplaySizeMethode", "getSize"));
-                    }
-                    nameValuePairs.add(new BasicNameValuePair("DisplaySize", size.x + "x" + size.y));
-                    double ratio = size.y / (double) size.x;
-                    ratio = Math.round(1000.0 * ratio) / 1000.0;
-                    nameValuePairs.add(new BasicNameValuePair("AspectRatio", String.valueOf(ratio)));
-                    Camera.Parameters params = camera.getParameters();
-                    List<Camera.Size> sizeList = params.getSupportedPictureSizes();
-                    StringBuilder sb = new StringBuilder();
-                    for(Camera.Size aufloesung : sizeList) {
-                        ratio = aufloesung.width  / (double) aufloesung.height ;
-                        ratio = Math.round(1000.0 * ratio) / 1000.0;
-                        sb.append(aufloesung.width + "x" + aufloesung.height + "/" + String.valueOf(ratio) + ", ");
-                    }
-                    nameValuePairs.add(new BasicNameValuePair("SizeList", sb.toString()));
-
-                    httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-                    // Execute HTTP Post Request
-                    HttpResponse response = httpclient.execute(httppost);
-
-                } catch(Throwable e) {
-                    StackTraceElement se = e.getStackTrace()[0];
-                    myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
-                    Helper.showTraceDialog(myApp, me);
-                }
-            }
-        }).start();
-    }
 }
