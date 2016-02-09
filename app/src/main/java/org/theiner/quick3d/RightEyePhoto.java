@@ -177,20 +177,20 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
 
                     Camera.Parameters params = camera.getParameters();
 
-                    Display display = getActivity().getWindowManager().getDefaultDisplay();
-                    Point size = new Point();
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                        display.getRealSize(size);
-                    } else {
-                        display.getSize(size);
-                    }
-                    int width = size.x;
-                    int height = size.y;
-                    float ratio = height / (float) width;
-
-                    List<Camera.Size> sizeList = params.getSupportedPictureSizes();
-                    int chosenSize = Helper.getPictureSizeIndexForHeight(sizeList, 800, ratio);
-                    params.setPictureSize(sizeList.get(chosenSize).width, sizeList.get(chosenSize).height);
+//                    Display display = getActivity().getWindowManager().getDefaultDisplay();
+//                    Point size = new Point();
+//                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+//                        display.getRealSize(size);
+//                    } else {
+//                        display.getSize(size);
+//                    }
+//                    int width = size.x;
+//                    int height = size.y;
+//                    float ratio = height / (float) width;
+//
+//                    List<Camera.Size> sizeList = params.getSupportedPictureSizes();
+//                    int chosenSize = Helper.getPictureSizeIndexForHeight(sizeList, 800, ratio);
+                    params.setPictureSize(myApp.getImageWidth(), myApp.getImageHeight());
 
                     Helper.setRotationParameter(getActivity(), cameraId, params);
 

@@ -9,6 +9,9 @@ import android.graphics.Bitmap;
 public class Q3DApplication extends Application {
     private String trace;
 
+    private int imageWidth;
+    private int imageHeight;
+
     private Boolean anaglyphSaved = false;
     private Boolean crossEyedSaved = false;
     private Boolean parallelEyedSaved = false;
@@ -16,6 +19,22 @@ public class Q3DApplication extends Application {
     private Bitmap leftEyeBitmap = null;
     private Bitmap rightEyeBitmap = null;
     private Bitmap anaglyphBitmap = null;
+
+    public int getImageWidth() {
+        return imageWidth;
+    }
+
+    public void setImageWidth(int imageWidth) {
+        this.imageWidth = imageWidth;
+    }
+
+    public int getImageHeight() {
+        return imageHeight;
+    }
+
+    public void setImageHeight(int imageHeight) {
+        this.imageHeight = imageHeight;
+    }
 
     public String getTrace() {
         return trace;

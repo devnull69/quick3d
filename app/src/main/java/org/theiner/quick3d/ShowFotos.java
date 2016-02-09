@@ -183,34 +183,31 @@ public class ShowFotos extends Activity {
         try {
             Display display = getWindowManager().getDefaultDisplay();
             Point size = new Point();
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                display.getRealSize(size);
-            } else {
-                display.getSize(size);
-            }
+
+            // Picture will be as high as the orignal width. Picture's width will be "scaleFactor" * width of original image
+            size.x = (int) (myApp.getImageWidth() * ((float)myApp.getImageWidth() / myApp.getImageHeight()));
+            size.y = myApp.getImageWidth();
+
             Bitmap zielBitmap = Bitmap.createBitmap(size.x, size.y, Bitmap.Config.ARGB_8888);
 
             int black = Color.argb(255, 0, 0, 0);
             zielBitmap.eraseColor(black);
 
             Canvas canvas = new Canvas(zielBitmap);
-            Rect srcRect = new Rect(0, 0, size.y, size.x);
 
-            double scaleFactor = (double)size.y/size.x;
             // Linkes Image soll links von der Mitte plaziert sein
             // Mitte der linken Hälfte = size.x / 4
-            // Hälfte von size.y weiter nach links = size.x/4 - size.y/2
-            int leftMargin = (int)Math.floor((double)size.x/4 - (size.y*scaleFactor)/2);
-            Rect dstRect = new Rect(leftMargin, 0, (int)Math.floor(size.y*scaleFactor) + leftMargin, size.y);
+            // Hälfte von imageSize.height weiter nach links = size.x/4 - imageSize.height/2
+            int leftMargin = (int)Math.floor((double)size.x/4 - myApp.getImageHeight()/2);
+
             Paint paint = new Paint();
             paint.setFilterBitmap(true);
             paint.setDither(true);
-            canvas.drawBitmap(firstBitmap, srcRect, dstRect, paint);
+            canvas.drawBitmap(firstBitmap, leftMargin, 0, paint);
 
             // Rechtes Images genauso weit von der Mitte nach rechts verschieben
             leftMargin = leftMargin + (int)Math.floor((double)size.x/2);
-            dstRect = new Rect(leftMargin, 0, (int)Math.floor(size.y*scaleFactor) + leftMargin, size.y);
-            canvas.drawBitmap(secondBitmap, srcRect, dstRect, paint);
+            canvas.drawBitmap(secondBitmap, leftMargin, 0, paint);
 
             String appendix = "_crosseyed.jpg";
 

@@ -180,7 +180,11 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
 
                     List<Camera.Size> sizeList = params.getSupportedPictureSizes();
                     int chosenSize = Helper.getPictureSizeIndexForHeight(sizeList, 800, ratio);
-                    params.setPictureSize(sizeList.get(chosenSize).width, sizeList.get(chosenSize).height);
+
+                    myApp.setImageWidth(sizeList.get(chosenSize).width);
+                    myApp.setImageHeight(sizeList.get(chosenSize).height);
+
+                    params.setPictureSize(myApp.getImageWidth(), myApp.getImageHeight());
 
                     Helper.setRotationParameter(getActivity(), cameraId, params);
 

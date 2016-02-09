@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="anaglyph_saved">Anaglyph file has been saved.</string>
+    <string name="app_name">Quick3D</string>
+    <string name="left_photo_tap">Tap to take the picture for the left eye</string>
+    <string name="right_photo_tap">Align and then tap to take the picture for the right eye</string>
+</resources>
