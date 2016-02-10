@@ -83,8 +83,6 @@ public class Helper {
                     previousHeight = i;
                 }
         }
-        if(chosenHeight == -1)
-            chosenHeight = previousHeight;
         return chosenHeight;
     }
 

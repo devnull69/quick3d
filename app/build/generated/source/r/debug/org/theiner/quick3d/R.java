@@ -50,8 +50,11 @@ public final class R {
     public static final class string {
         public static final int anaglyph_saved=0x7f040000;
         public static final int app_name=0x7f040001;
-        public static final int left_photo_tap=0x7f040002;
-        public static final int right_photo_tap=0x7f040003;
+        public static final int compat_body=0x7f040002;
+        public static final int compat_headline=0x7f040003;
+        public static final int foto_saved=0x7f040004;
+        public static final int left_photo_tap=0x7f040005;
+        public static final int right_photo_tap=0x7f040006;
     }
     public static final class style {
         /**  Customize your theme here. 

@@ -1,5 +1,138 @@
 [
     {
+        "outputFile": "C:\\Users\\ttheiner\\AndroidStudioProjects\\quick3d\\app\\build\\intermediates\\res\\merged\\debug\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 56,
+                    "endOffset": 107
+                },
+                "from": {
+                    "file": "C:\\Users\\ttheiner\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\values\\dimens.xml"
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 112,
+                    "endColumn": 54,
+                    "endOffset": 162
+                },
+                "from": {
+                    "file": "C:\\Users\\ttheiner\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\values\\dimens.xml"
+                }
+            },
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 167,
+                    "endColumn": 74,
+                    "endOffset": 237
+                },
+                "from": {
+                    "file": "C:\\Users\\ttheiner\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\values\\strings.xml"
+                }
+            },
+            {
+                "to": {
+                    "startLine": 5,
+                    "startColumn": 4,
+                    "startOffset": 242,
+                    "endColumn": 44,
+                    "endOffset": 282
+                },
+                "from": {
+                    "file": "C:\\Users\\ttheiner\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\values\\strings.xml"
+                }
+            },
+            {
+                "to": {
+                    "startLine": 6,
+                    "startColumn": 4,
+                    "startOffset": 287,
+                    "endColumn": 159,
+                    "endOffset": 442
+                },
+                "from": {
+                    "file": "C:\\Users\\ttheiner\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\values\\strings.xml"
+                }
+            },
+            {
+                "to": {
+                    "startLine": 7,
+                    "startColumn": 4,
+                    "startOffset": 447,
+                    "endColumn": 65,
+                    "endOffset": 508
+                },
+                "from": {
+                    "file": "C:\\Users\\ttheiner\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\values\\strings.xml"
+                }
+            },
+            {
+                "to": {
+                    "startLine": 8,
+                    "startColumn": 4,
+                    "startOffset": 513,
+                    "endColumn": 66,
+                    "endOffset": 575
+                },
+                "from": {
+                    "file": "C:\\Users\\ttheiner\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 4,
+                        "startOffset": 382,
+                        "endColumn": 66,
+                        "endOffset": 444
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 9,
+                    "startColumn": 4,
+                    "startOffset": 580,
+                    "endColumn": 89,
+                    "endOffset": 665
+                },
+                "from": {
+                    "file": "C:\\Users\\ttheiner\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\values\\strings.xml"
+                }
+            },
+            {
+                "to": {
+                    "startLine": 10,
+                    "startColumn": 4,
+                    "startOffset": 670,
+                    "endColumn": 108,
+                    "endOffset": 774
+                },
+                "from": {
+                    "file": "C:\\Users\\ttheiner\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\values\\strings.xml"
+                }
+            },
+            {
+                "to": {
+                    "startLine": 11,
+                    "startColumn": 4,
+                    "startOffset": 779,
+                    "endLine": 13,
+                    "endColumn": 12,
+                    "endOffset": 907
+                },
+                "from": {
+                    "file": "C:\\Users\\ttheiner\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\values\\styles.xml"
+                }
+            }
+        ]
+    },
+    {
         "outputFile": "C:\\Users\\Thomas\\AndroidStudioProjects\\quick3d\\app\\build\\intermediates\\res\\merged\\debug\\values\\values.xml",
         "map": [
             {

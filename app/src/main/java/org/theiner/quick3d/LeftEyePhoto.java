@@ -1,8 +1,10 @@
 package org.theiner.quick3d;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
@@ -181,17 +183,31 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
                     List<Camera.Size> sizeList = params.getSupportedPictureSizes();
                     int chosenSize = Helper.getPictureSizeIndexForHeight(sizeList, 800, ratio);
 
-                    myApp.setImageWidth(sizeList.get(chosenSize).width);
-                    myApp.setImageHeight(sizeList.get(chosenSize).height);
+                    // Fehlerbehandlung, Kompatibilitätsmeldung
+                    if(chosenSize==-1) {
+                        new AlertDialog.Builder(this.getActivity())
+                                .setTitle(R.string.compat_headline)
+                                .setMessage(R.string.compat_body)
+                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                })
+                                .show();
+                        System.exit(0);
+                    } else {
+                        myApp.setImageWidth(sizeList.get(chosenSize).width);
+                        myApp.setImageHeight(sizeList.get(chosenSize).height);
 
-                    params.setPictureSize(myApp.getImageWidth(), myApp.getImageHeight());
+                        params.setPictureSize(myApp.getImageWidth(), myApp.getImageHeight());
 
-                    Helper.setRotationParameter(getActivity(), cameraId, params);
+                        Helper.setRotationParameter(getActivity(), cameraId, params);
 
-                    camera.setParameters(params);
+                        camera.setParameters(params);
 
-                    camera.setPreviewDisplay(sh);
-                    camera.startPreview();
+                        camera.setPreviewDisplay(sh);
+                        camera.startPreview();
+                    }
 
                     myApp.appendTrace("LeftEyePhoto: Preview auf Surface anzeigen Ende\n");
                 } catch (IOException e) {

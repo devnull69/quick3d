@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -181,6 +182,8 @@ public class ShowFotos extends Activity {
 
     public void onSave(View view) {
         try {
+            ivSave.setVisibility(View.INVISIBLE);
+
             Display display = getWindowManager().getDefaultDisplay();
             Point size = new Point();
 
@@ -233,7 +236,9 @@ public class ShowFotos extends Activity {
             } else {
                 myApp.setParallelEyedSaved(true);
             }
-            ivSave.setVisibility(View.INVISIBLE);
+
+            Toast.makeText(this, getString(R.string.foto_saved),
+                    Toast.LENGTH_LONG).show();
         } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
