@@ -19,24 +19,26 @@ public final class R {
         public static final int icon_anaglyph=0x7f020001;
         public static final int icon_close=0x7f020002;
         public static final int icon_save=0x7f020003;
-        public static final int icon_switch=0x7f020004;
-        public static final int icon_twoimages=0x7f020005;
-        public static final int icon_wiggle=0x7f020006;
+        public static final int icon_share=0x7f020004;
+        public static final int icon_switch=0x7f020005;
+        public static final int icon_twoimages=0x7f020006;
+        public static final int icon_wiggle=0x7f020007;
     }
     public static final class id {
         public static final int flFragmentContainer=0x7f070000;
         public static final int ivAnaglyph=0x7f070001;
         public static final int ivClose=0x7f070002;
-        public static final int ivLeft=0x7f070006;
-        public static final int ivRight=0x7f070008;
-        public static final int ivSave=0x7f070005;
-        public static final int ivSwitch=0x7f070007;
+        public static final int ivLeft=0x7f070007;
+        public static final int ivRight=0x7f070009;
+        public static final int ivSave=0x7f070006;
+        public static final int ivShare=0x7f070005;
+        public static final int ivSwitch=0x7f070008;
         public static final int ivTwoImages=0x7f070003;
         public static final int ivWiggle=0x7f070004;
-        public static final int myrightsurface=0x7f07000a;
-        public static final int mysurface=0x7f070009;
-        public static final int overlay=0x7f07000b;
-        public static final int showFoto=0x7f07000c;
+        public static final int myrightsurface=0x7f07000b;
+        public static final int mysurface=0x7f07000a;
+        public static final int overlay=0x7f07000c;
+        public static final int showFoto=0x7f07000d;
     }
     public static final class layout {
         public static final int activity_quick3dmain=0x7f030000;

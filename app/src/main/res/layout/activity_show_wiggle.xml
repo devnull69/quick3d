@@ -5,26 +5,32 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/ivWiggle" />
+        android:id="@+id/ivWiggle"
+        android:onClick="onShowHide"/>
 
     <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:id="@+id/ivClose"
         android:onClick="onClose" />
 
     <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="65dp"
         android:id="@+id/ivTwoImages"
         android:onClick="onTwoImages" />
 
     <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="130dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="120dp"
         android:id="@+id/ivAnaglyph"
         android:onClick="onAnaglyph" />
+
 
 </RelativeLayout>

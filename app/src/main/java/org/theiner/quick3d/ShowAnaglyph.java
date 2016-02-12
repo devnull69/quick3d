@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -22,9 +23,15 @@ public class ShowAnaglyph extends Activity {
 
     private String _filename;
     private Bitmap zielBitmap;
-    private Bitmap rotBitmap;
     Q3DApplication myApp;
+
+    ImageView ivClose;
+    ImageView ivTwoImages;
+    ImageView ivWiggle;
+    ImageView ivShare;
     ImageView ivSave;
+
+    private boolean showTools = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,14 +60,17 @@ public class ShowAnaglyph extends Activity {
             ImageView ivAnaglyph = (ImageView) findViewById(R.id.ivAnaglyph);
             ivAnaglyph.setImageBitmap(zielBitmap);
 
-            ImageView ivClose = (ImageView) findViewById(R.id.ivClose);
+            ivClose = (ImageView) findViewById(R.id.ivClose);
             ivClose.setImageResource(R.drawable.icon_close);
 
-            ImageView ivTwoImages = (ImageView) findViewById(R.id.ivTwoImages);
+            ivTwoImages = (ImageView) findViewById(R.id.ivTwoImages);
             ivTwoImages.setImageResource(R.drawable.icon_twoimages);
 
-            ImageView ivWiggle = (ImageView) findViewById(R.id.ivWiggle);
+            ivWiggle = (ImageView) findViewById(R.id.ivWiggle);
             ivWiggle.setImageResource(R.drawable.icon_wiggle);
+
+            ivShare = (ImageView) findViewById(R.id.ivShare);
+            ivShare.setImageResource(R.drawable.icon_share);
 
             if(!myApp.getAnaglyphSaved()) {
                 ivSave = (ImageView) findViewById(R.id.ivSave);
@@ -133,6 +143,7 @@ public class ShowAnaglyph extends Activity {
 
             ivSave.setVisibility(View.INVISIBLE);
 
+            myApp.setAnaglyphFilename(photoFile);
             myApp.setAnaglyphSaved(true);
 
             Toast.makeText(this, getString(R.string.anaglyph_saved),
@@ -142,6 +153,41 @@ public class ShowAnaglyph extends Activity {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);
+        }
+    }
+
+    private void openSharing() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        shareIntent.setType("image/*");
+
+        if(!myApp.getAnaglyphSaved())
+            onSave(findViewById(R.id.ivSave));
+
+        File file = new File(myApp.getAnaglyphFilename());
+        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+
+        startActivity(shareIntent);
+    }
+
+    public void onShare(View view) {
+        openSharing();
+    }
+
+    public void onShowHide(View view) {
+        showTools = !showTools;
+        if(!showTools) {
+            ivClose.setVisibility(View.INVISIBLE);
+            ivTwoImages.setVisibility(View.INVISIBLE);
+            ivWiggle.setVisibility(View.INVISIBLE);
+            ivShare.setVisibility(View.INVISIBLE);
+            ivSave.setVisibility(View.INVISIBLE);
+        } else {
+            ivClose.setVisibility(View.VISIBLE);
+            ivTwoImages.setVisibility(View.VISIBLE);
+            ivWiggle.setVisibility(View.VISIBLE);
+            ivShare.setVisibility(View.VISIBLE);
+            ivSave.setVisibility(View.VISIBLE);
         }
     }
 }

@@ -1,89 +1,89 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:2:1-43:12
+ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:2:1-43:12
 	xmlns:android
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:2:11-69
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:2:11-69
 	package
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:3:5-34
-		INJECTED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:3:5-34
+		INJECTED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml
 	android:versionName
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:5:5-32
-		INJECTED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:5:5-32
+		INJECTED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml
 	android:versionCode
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:4:5-29
-		INJECTED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:4:5-29
+		INJECTED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml
 uses-permission#android.permission.CAMERA
-ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:7:5-65
+ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:7:5-65
 	android:name
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:7:22-62
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:7:22-62
 uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:8:5-81
+ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:8:5-81
 	android:name
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:8:22-78
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:8:22-78
 uses-feature#android.hardware.camera
-ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:10:5-60
+ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:10:5-60
 	android:name
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:10:19-57
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:10:19-57
 uses-feature#android.hardware.camera.autofocus
-ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:11:5-70
+ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:11:5-70
 	android:name
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:11:19-67
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:11:19-67
 application
-ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:13:5-41:19
+ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:13:5-41:19
 	android:label
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:16:9-41
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:16:9-41
 	android:allowBackup
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:14:9-35
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:14:9-35
 	android:icon
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:15:9-45
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:15:9-45
 	android:theme
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:17:9-73
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:17:9-73
 	android:name
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:18:9-39
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:18:9-39
 activity#org.theiner.quick3d.Quick3DMain
-ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:19:9-28:20
+ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:19:9-28:20
 	android:screenOrientation
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:22:13-49
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:22:13-49
 	android:label
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:21:13-45
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:21:13-45
 	android:name
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:20:13-40
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:20:13-40
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:23:13-27:29
+ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:23:13-27:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:24:17-69
+ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:24:17-69
 	android:name
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:24:25-66
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:24:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:26:17-77
+ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:26:17-77
 	android:name
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:26:27-74
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:26:27-74
 activity#org.theiner.quick3d.ShowFotos
-ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:29:9-32:20
+ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:29:9-32:20
 	android:screenOrientation
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:31:13-50
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:31:13-50
 	android:name
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:30:13-38
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:30:13-38
 activity#org.theiner.quick3d.ShowAnaglyph
-ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:33:9-36:20
+ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:33:9-36:20
 	android:screenOrientation
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:35:13-49
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:35:13-49
 	android:name
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:34:13-41
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:34:13-41
 activity#org.theiner.quick3d.ShowWiggle
-ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:37:9-40:20
+ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:37:9-40:20
 	android:screenOrientation
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:39:13-49
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:39:13-49
 	android:name
-		ADDED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:38:13-39
+		ADDED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml:38:13-39
 uses-sdk
-INJECTED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 	android:targetSdkVersion
-		INJECTED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\ttheiner\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Thomas\AndroidStudioProjects\quick3d\app\src\main\AndroidManifest.xml

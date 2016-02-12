@@ -54,5 +54,9 @@
     {
         "merged": "C:\\Users\\Thomas\\AndroidStudioProjects\\quick3d\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\icon_close.png",
         "source": "C:\\Users\\Thomas\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\drawable-xhdpi\\icon_close.png"
+    },
+    {
+        "merged": "C:\\Users\\Thomas\\AndroidStudioProjects\\quick3d\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\icon_share.png",
+        "source": "C:\\Users\\Thomas\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\drawable-xhdpi\\icon_share.png"
     }
 ]

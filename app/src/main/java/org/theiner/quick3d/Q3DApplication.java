@@ -20,6 +20,34 @@ public class Q3DApplication extends Application {
     private Bitmap rightEyeBitmap = null;
     private Bitmap anaglyphBitmap = null;
 
+    private String crossEyedFilename = "";
+    private String parallelEyedFilename = "";
+    private String anaglyphFilename = "";
+
+    public String getCrossEyedFilename() {
+        return crossEyedFilename;
+    }
+
+    public void setCrossEyedFilename(String crossEyedFilename) {
+        this.crossEyedFilename = crossEyedFilename;
+    }
+
+    public String getParallelEyedFilename() {
+        return parallelEyedFilename;
+    }
+
+    public void setParallelEyedFilename(String parallelEyedFilename) {
+        this.parallelEyedFilename = parallelEyedFilename;
+    }
+
+    public String getAnaglyphFilename() {
+        return anaglyphFilename;
+    }
+
+    public void setAnaglyphFilename(String anaglyphFilename) {
+        this.anaglyphFilename = anaglyphFilename;
+    }
+
     public int getImageWidth() {
         return imageWidth;
     }

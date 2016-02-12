@@ -36,12 +36,12 @@
         "source": "C:\\Users\\Thomas\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\drawable-hdpi\\icon_anaglyph.png"
     },
     {
-        "merged": "C:\\Users\\ttheiner\\AndroidStudioProjects\\quick3d\\app\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ic_launcher.png",
-        "source": "C:\\Users\\ttheiner\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\drawable-hdpi\\ic_launcher.png"
-    },
-    {
         "merged": "C:\\Users\\Thomas\\AndroidStudioProjects\\quick3d\\app\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\icon_wiggle.png",
         "source": "C:\\Users\\Thomas\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\drawable-hdpi\\icon_wiggle.png"
+    },
+    {
+        "merged": "C:\\Users\\ttheiner\\AndroidStudioProjects\\quick3d\\app\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ic_launcher.png",
+        "source": "C:\\Users\\ttheiner\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\drawable-hdpi\\ic_launcher.png"
     },
     {
         "merged": "C:\\Users\\Thomas\\AndroidStudioProjects\\quick3d\\app\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\icon_switch.png",
@@ -50,6 +50,10 @@
     {
         "merged": "C:\\Users\\ttheiner\\AndroidStudioProjects\\quick3d\\app\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\icon_wiggle.png",
         "source": "C:\\Users\\ttheiner\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\drawable-hdpi\\icon_wiggle.png"
+    },
+    {
+        "merged": "C:\\Users\\Thomas\\AndroidStudioProjects\\quick3d\\app\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\icon_share.png",
+        "source": "C:\\Users\\Thomas\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\drawable-hdpi\\icon_share.png"
     },
     {
         "merged": "C:\\Users\\ttheiner\\AndroidStudioProjects\\quick3d\\app\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\icon_save.png",

@@ -26,6 +26,12 @@ public class ShowWiggle extends Activity {
     Timer myTimer;
     Q3DApplication myApp;
 
+    ImageView ivClose;
+    ImageView ivTwoImages;
+    ImageView ivAnaglyph;
+
+    private boolean showTools = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         myApp = ((Q3DApplication)this.getApplicationContext());
@@ -49,13 +55,13 @@ public class ShowWiggle extends Activity {
             rightBitmap = myApp.getRightEyeBitmap();
 
             leftBitmap = myApp.getLeftEyeBitmap();
-            ImageView ivClose = (ImageView) findViewById(R.id.ivClose);
+            ivClose = (ImageView) findViewById(R.id.ivClose);
             ivClose.setImageResource(R.drawable.icon_close);
 
-            ImageView ivTwoImages = (ImageView) findViewById(R.id.ivTwoImages);
+            ivTwoImages = (ImageView) findViewById(R.id.ivTwoImages);
             ivTwoImages.setImageResource(R.drawable.icon_twoimages);
 
-            ImageView ivAnaglyph = (ImageView) findViewById(R.id.ivAnaglyph);
+            ivAnaglyph = (ImageView) findViewById(R.id.ivAnaglyph);
             ivAnaglyph.setImageResource(R.drawable.icon_anaglyph);
 
             me = this;
@@ -145,6 +151,19 @@ public class ShowWiggle extends Activity {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);
+        }
+    }
+
+    public void onShowHide(View view) {
+        showTools = !showTools;
+        if(!showTools) {
+            ivClose.setVisibility(View.INVISIBLE);
+            ivTwoImages.setVisibility(View.INVISIBLE);
+            ivAnaglyph.setVisibility(View.INVISIBLE);
+        } else {
+            ivClose.setVisibility(View.VISIBLE);
+            ivTwoImages.setVisibility(View.VISIBLE);
+            ivAnaglyph.setVisibility(View.VISIBLE);
         }
     }
 }

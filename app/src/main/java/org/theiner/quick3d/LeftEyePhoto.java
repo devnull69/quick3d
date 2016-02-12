@@ -191,10 +191,11 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
                                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.cancel();
+                                        getActivity().finish();
                                     }
                                 })
                                 .show();
-                        System.exit(0);
+                        camera.release();
                     } else {
                         myApp.setImageWidth(sizeList.get(chosenSize).width);
                         myApp.setImageHeight(sizeList.get(chosenSize).height);

@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Display;
@@ -33,9 +34,17 @@ public class ShowFotos extends Activity {
     private Bitmap secondBitmap;
     private ImageView ivLeft;
     private ImageView ivRight;
+
+    private ImageView ivClose;
+    private ImageView ivSwitch;
+    private ImageView ivAnaglyph;
+    private ImageView ivWiggle;
+    private ImageView ivShare;
     private ImageView ivSave;
     Q3DApplication myApp;
     private Boolean isCrossEyed = true;
+
+    private boolean showTools = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +72,11 @@ public class ShowFotos extends Activity {
 
             ivLeft = (ImageView) findViewById(R.id.ivLeft);
             ivRight = (ImageView) findViewById(R.id.ivRight);
-            ImageView ivClose = (ImageView) findViewById(R.id.ivClose);
-            ImageView ivSwitch = (ImageView) findViewById(R.id.ivSwitch);
-            ImageView ivAnaglyph = (ImageView) findViewById(R.id.ivAnaglyph);
-            ImageView ivWiggle = (ImageView) findViewById(R.id.ivWiggle);
+            ivClose = (ImageView) findViewById(R.id.ivClose);
+            ivSwitch = (ImageView) findViewById(R.id.ivSwitch);
+            ivAnaglyph = (ImageView) findViewById(R.id.ivAnaglyph);
+            ivWiggle = (ImageView) findViewById(R.id.ivWiggle);
+            ivShare = (ImageView) findViewById(R.id.ivShare);
             ivSave = (ImageView) findViewById(R.id.ivSave);
 
             myApp.appendTrace("ShowFotos: Image Views gefunden.\n");
@@ -85,6 +95,7 @@ public class ShowFotos extends Activity {
             ivSwitch.setImageResource(R.drawable.icon_switch);
             ivAnaglyph.setImageResource(R.drawable.icon_anaglyph);
             ivWiggle.setImageResource(R.drawable.icon_wiggle);
+            ivShare.setImageResource(R.drawable.icon_share);
             ivSave.setImageResource(R.drawable.icon_save);
 
             if(myApp.getCrossEyedSaved()) {
@@ -232,8 +243,10 @@ public class ShowFotos extends Activity {
             fOutputStream.close();
 
             if (isCrossEyed) {
+                myApp.setCrossEyedFilename(photoFile);
                 myApp.setCrossEyedSaved(true);
             } else {
+                myApp.setParallelEyedFilename(photoFile);
                 myApp.setParallelEyedSaved(true);
             }
 
@@ -246,4 +259,47 @@ public class ShowFotos extends Activity {
         }
 
     }
+
+    private void openSharing() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        shareIntent.setType("image/*");
+
+        if(isCrossEyed && !myApp.getCrossEyedSaved() || (!isCrossEyed && !myApp.getParallelEyedSaved()))
+            onSave(findViewById(R.id.ivSave));
+
+        File file;
+        if(isCrossEyed) {
+            file = new File(myApp.getCrossEyedFilename());
+            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+        } else {
+            file = new File(myApp.getParallelEyedFilename());
+            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+        }
+        startActivity(shareIntent);
+    }
+
+    public void onShare(View view) {
+        openSharing();
+    }
+
+    public void onShowHide(View view) {
+        showTools = !showTools;
+        if(!showTools) {
+            ivClose.setVisibility(View.INVISIBLE);
+            ivSwitch.setVisibility(View.INVISIBLE);
+            ivAnaglyph.setVisibility(View.INVISIBLE);
+            ivWiggle.setVisibility(View.INVISIBLE);
+            ivShare.setVisibility(View.INVISIBLE);
+            ivSave.setVisibility(View.INVISIBLE);
+        } else {
+            ivClose.setVisibility(View.VISIBLE);
+            ivSwitch.setVisibility(View.VISIBLE);
+            ivAnaglyph.setVisibility(View.VISIBLE);
+            ivWiggle.setVisibility(View.VISIBLE);
+            ivShare.setVisibility(View.VISIBLE);
+            ivSave.setVisibility(View.VISIBLE);
+        }
+    }
+
 }

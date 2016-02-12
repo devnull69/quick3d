@@ -141,17 +141,17 @@
                     "startLine": 4,
                     "startColumn": 4,
                     "startOffset": 173,
-                    "endColumn": 83,
-                    "endOffset": 252
+                    "endColumn": 154,
+                    "endOffset": 323
                 },
                 "from": {
                     "file": "C:\\Users\\Thomas\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\values-en\\strings.xml",
                     "position": {
-                        "startLine": 4,
+                        "startLine": 8,
                         "startColumn": 4,
-                        "startOffset": 177,
-                        "endColumn": 83,
-                        "endOffset": 256
+                        "startOffset": 495,
+                        "endColumn": 154,
+                        "endOffset": 645
                     }
                 }
             },
@@ -159,18 +159,75 @@
                 "to": {
                     "startLine": 5,
                     "startColumn": 4,
-                    "startOffset": 257,
-                    "endColumn": 100,
-                    "endOffset": 353
+                    "startOffset": 328,
+                    "endColumn": 63,
+                    "endOffset": 387
+                },
+                "from": {
+                    "file": "C:\\Users\\Thomas\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\values-en\\strings.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 4,
+                        "startOffset": 430,
+                        "endColumn": 63,
+                        "endOffset": 489
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 6,
+                    "startColumn": 4,
+                    "startOffset": 392,
+                    "endColumn": 64,
+                    "endOffset": 452
+                },
+                "from": {
+                    "file": "C:\\Users\\Thomas\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\values-en\\strings.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 177,
+                        "endColumn": 64,
+                        "endOffset": 237
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 7,
+                    "startColumn": 4,
+                    "startOffset": 457,
+                    "endColumn": 83,
+                    "endOffset": 536
                 },
                 "from": {
                     "file": "C:\\Users\\Thomas\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\values-en\\strings.xml",
                     "position": {
                         "startLine": 5,
                         "startColumn": 4,
-                        "startOffset": 262,
+                        "startOffset": 243,
+                        "endColumn": 83,
+                        "endOffset": 322
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 8,
+                    "startColumn": 4,
+                    "startOffset": 541,
+                    "endColumn": 100,
+                    "endOffset": 637
+                },
+                "from": {
+                    "file": "C:\\Users\\Thomas\\AndroidStudioProjects\\quick3d\\app\\src\\main\\res\\values-en\\strings.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 328,
                         "endColumn": 100,
-                        "endOffset": 358
+                        "endOffset": 424
                     }
                 }
             }
