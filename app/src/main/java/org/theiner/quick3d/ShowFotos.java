@@ -298,7 +298,8 @@ public class ShowFotos extends Activity {
             ivAnaglyph.setVisibility(View.VISIBLE);
             ivWiggle.setVisibility(View.VISIBLE);
             ivShare.setVisibility(View.VISIBLE);
-            ivSave.setVisibility(View.VISIBLE);
+            if((isCrossEyed && !myApp.getCrossEyedSaved()) || (!isCrossEyed && !myApp.getParallelEyedSaved()))
+                ivSave.setVisibility(View.VISIBLE);
         }
     }
 

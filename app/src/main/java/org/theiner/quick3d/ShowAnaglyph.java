@@ -72,10 +72,10 @@ public class ShowAnaglyph extends Activity {
             ivShare = (ImageView) findViewById(R.id.ivShare);
             ivShare.setImageResource(R.drawable.icon_share);
 
-            if(!myApp.getAnaglyphSaved()) {
-                ivSave = (ImageView) findViewById(R.id.ivSave);
-                ivSave.setImageResource(R.drawable.icon_save);
-            }
+            ivSave = (ImageView) findViewById(R.id.ivSave);
+            ivSave.setImageResource(R.drawable.icon_save);
+            if(myApp.getAnaglyphSaved())
+                ivSave.setVisibility(View.INVISIBLE);
 
         } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
@@ -187,7 +187,8 @@ public class ShowAnaglyph extends Activity {
             ivTwoImages.setVisibility(View.VISIBLE);
             ivWiggle.setVisibility(View.VISIBLE);
             ivShare.setVisibility(View.VISIBLE);
-            ivSave.setVisibility(View.VISIBLE);
+            if(!myApp.getAnaglyphSaved())
+                ivSave.setVisibility(View.VISIBLE);
         }
     }
 }

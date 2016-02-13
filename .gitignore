@@ -2,6 +2,10 @@
 /local.properties
 /.idea/
 *.iml
+/app/build/intermediates
+/app/build/outputs
+/app/build/tmp
+
 .DS_Store
 /build
 /captures
