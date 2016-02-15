@@ -1,11 +1,11 @@
-.gradle
+.gradle/
 /local.properties
-/.idea/
+.idea/
 *.iml
-/app/build/intermediates
-/app/build/outputs
-/app/build/tmp
+/app/build/intermediates/
+/app/build/outputs/
+/app/build/tmp/
+/build
 
 .DS_Store
-/build
 /captures
