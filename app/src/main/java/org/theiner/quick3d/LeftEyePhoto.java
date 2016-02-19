@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.hardware.Camera;
@@ -119,7 +120,10 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
                     try {
                         myApp.appendTrace("LeftEyePhoto: Photo speichern Start\n");
 
+                        //Bitmap fisheyedTest = Helper.fisheye(Helper.getRotatedBitmap(bytes));
+
                         myApp.setLeftEyeBitmap(Helper.getRotatedBitmap(bytes));
+                        //myApp.setLeftEyeBitmap(fisheyedTest);
                         Quick3DMain actMain = (Quick3DMain) getActivity();
 
                         myApp.appendTrace("LeftEyePhoto: Photo speichern Ende\n");
