@@ -18,27 +18,29 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
         public static final int icon_anaglyph=0x7f020001;
         public static final int icon_close=0x7f020002;
-        public static final int icon_save=0x7f020003;
-        public static final int icon_share=0x7f020004;
-        public static final int icon_switch=0x7f020005;
-        public static final int icon_twoimages=0x7f020006;
-        public static final int icon_wiggle=0x7f020007;
+        public static final int icon_halftone=0x7f020003;
+        public static final int icon_save=0x7f020004;
+        public static final int icon_share=0x7f020005;
+        public static final int icon_switch=0x7f020006;
+        public static final int icon_twoimages=0x7f020007;
+        public static final int icon_wiggle=0x7f020008;
     }
     public static final class id {
         public static final int flFragmentContainer=0x7f070000;
         public static final int ivAnaglyph=0x7f070001;
         public static final int ivClose=0x7f070002;
-        public static final int ivLeft=0x7f070007;
+        public static final int ivLeft=0x7f070008;
         public static final int ivRight=0x7f070009;
-        public static final int ivSave=0x7f070006;
-        public static final int ivShare=0x7f070005;
-        public static final int ivSwitch=0x7f070008;
-        public static final int ivTwoImages=0x7f070003;
-        public static final int ivWiggle=0x7f070004;
-        public static final int myrightsurface=0x7f07000b;
-        public static final int mysurface=0x7f07000a;
-        public static final int overlay=0x7f07000c;
-        public static final int showFoto=0x7f07000d;
+        public static final int ivSave=0x7f070007;
+        public static final int ivShare=0x7f070006;
+        public static final int ivSwitch=0x7f070003;
+        public static final int ivTwoImages=0x7f070004;
+        public static final int ivWiggle=0x7f070005;
+        public static final int myrightsurface=0x7f07000c;
+        public static final int mysurface=0x7f07000b;
+        public static final int overlay=0x7f07000d;
+        public static final int showFoto=0x7f07000e;
+        public static final int tvCurrent=0x7f07000a;
     }
     public static final class layout {
         public static final int activity_quick3dmain=0x7f030000;
@@ -54,9 +56,11 @@ public final class R {
         public static final int app_name=0x7f040001;
         public static final int compat_body=0x7f040002;
         public static final int compat_headline=0x7f040003;
-        public static final int foto_saved=0x7f040004;
-        public static final int left_photo_tap=0x7f040005;
-        public static final int right_photo_tap=0x7f040006;
+        public static final int crosseyed=0x7f040004;
+        public static final int foto_saved=0x7f040005;
+        public static final int left_photo_tap=0x7f040006;
+        public static final int paralleleyed=0x7f040007;
+        public static final int right_photo_tap=0x7f040008;
     }
     public static final class style {
         /**  Customize your theme here. 

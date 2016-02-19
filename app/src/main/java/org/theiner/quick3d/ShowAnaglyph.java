@@ -14,6 +14,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.theiner.quick3d.asynch.ImageData;
+import org.theiner.quick3d.asynch.ImageSaver;
+import org.theiner.quick3d.asynch.ImageType;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -26,10 +30,14 @@ public class ShowAnaglyph extends Activity {
     Q3DApplication myApp;
 
     ImageView ivClose;
+    ImageView ivSwitch;
     ImageView ivTwoImages;
     ImageView ivWiggle;
     ImageView ivShare;
     ImageView ivSave;
+    ImageView ivAnaglyph;
+
+    private boolean isHalftone = false;
 
     private boolean showTools = true;
 
@@ -57,11 +65,16 @@ public class ShowAnaglyph extends Activity {
             while(myApp.getAnaglyphBitmap() == null);
 
             zielBitmap = myApp.getAnaglyphBitmap();
-            ImageView ivAnaglyph = (ImageView) findViewById(R.id.ivAnaglyph);
+            isHalftone = false;
+
+            ivAnaglyph = (ImageView) findViewById(R.id.ivAnaglyph);
             ivAnaglyph.setImageBitmap(zielBitmap);
 
             ivClose = (ImageView) findViewById(R.id.ivClose);
             ivClose.setImageResource(R.drawable.icon_close);
+
+            ivSwitch = (ImageView) findViewById(R.id.ivSwitch);
+            ivSwitch.setImageResource(R.drawable.icon_halftone);
 
             ivTwoImages = (ImageView) findViewById(R.id.ivTwoImages);
             ivTwoImages.setImageResource(R.drawable.icon_twoimages);
@@ -126,28 +139,39 @@ public class ShowAnaglyph extends Activity {
         }
     }
 
+    private void doSave(final boolean toBeShared) {
+        ivSave.setVisibility(View.INVISIBLE);
+        final ShowAnaglyph that = this;
+        ImageSaver.SaveCompleteListener scl = new ImageSaver.SaveCompleteListener() {
+            @Override
+            public void onSaveComplete(String result) {
+                Toast.makeText(that, getString(R.string.anaglyph_saved),
+                        Toast.LENGTH_LONG).show();
+
+                if(toBeShared) {
+                    doShare();
+                }
+            }
+        };
+
+        ImageData imageData = new ImageData();
+
+        imageData.setFileName(_filename);
+
+        if(isHalftone) {
+            imageData.setImageType(ImageType.HALFTONE);
+        } else {
+            imageData.setImageType(ImageType.ANAGLYPH);
+        }
+
+        imageData.setFirstBitmap(zielBitmap);
+        ImageSaver imageSaver = new ImageSaver(myApp, scl);
+        imageSaver.execute(imageData);
+    }
+
     public void onSave(View view) {
         try {
-            File pictureFileDir = Helper.getDir();
-            pictureFileDir.mkdirs();
-            String photoFile = pictureFileDir.getPath() + File.separator + _filename + "_anaglyph.jpg";
-
-            File pictureFile = new File(photoFile);
-
-            OutputStream fOutputStream = new FileOutputStream(pictureFile);
-
-            zielBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOutputStream);
-
-            fOutputStream.flush();
-            fOutputStream.close();
-
-            ivSave.setVisibility(View.INVISIBLE);
-
-            myApp.setAnaglyphFilename(photoFile);
-            myApp.setAnaglyphSaved(true);
-
-            Toast.makeText(this, getString(R.string.anaglyph_saved),
-                    Toast.LENGTH_LONG).show();
+            doSave(false);
 
         } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
@@ -156,18 +180,26 @@ public class ShowAnaglyph extends Activity {
         }
     }
 
-    private void openSharing() {
+    private void doShare() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         shareIntent.setType("image/*");
 
-        if(!myApp.getAnaglyphSaved())
-            onSave(findViewById(R.id.ivSave));
-
-        File file = new File(myApp.getAnaglyphFilename());
+        String dateiname = myApp.getAnaglyphFilename();
+        if(isHalftone)
+            dateiname = myApp.getHalftoneFilename();
+        File file = new File(dateiname);
         shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
 
         startActivity(shareIntent);
+    }
+
+    private void openSharing() {
+        if((!isHalftone && !myApp.getAnaglyphSaved()) || (isHalftone && !myApp.getHalftoneSaved())) {
+            doSave(true);
+        } else {
+            doShare();
+        }
     }
 
     public void onShare(View view) {
@@ -178,17 +210,52 @@ public class ShowAnaglyph extends Activity {
         showTools = !showTools;
         if(!showTools) {
             ivClose.setVisibility(View.INVISIBLE);
+            ivSwitch.setVisibility(View.INVISIBLE);
             ivTwoImages.setVisibility(View.INVISIBLE);
             ivWiggle.setVisibility(View.INVISIBLE);
             ivShare.setVisibility(View.INVISIBLE);
             ivSave.setVisibility(View.INVISIBLE);
         } else {
             ivClose.setVisibility(View.VISIBLE);
+            ivSwitch.setVisibility(View.VISIBLE);
             ivTwoImages.setVisibility(View.VISIBLE);
             ivWiggle.setVisibility(View.VISIBLE);
             ivShare.setVisibility(View.VISIBLE);
             if(!myApp.getAnaglyphSaved())
                 ivSave.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void onSwitch(View view) {
+        try {
+
+            isHalftone = !isHalftone;
+
+            if(isHalftone) {
+                // wait if Halftone thread is not yet ready
+                while(myApp.getHalftoneBitmap() == null);
+                zielBitmap = myApp.getHalftoneBitmap();
+                ivAnaglyph.setImageBitmap(zielBitmap);
+                if(myApp.getHalftoneSaved()) {
+                    ivSave.setVisibility(View.INVISIBLE);
+                } else {
+                    ivSave.setVisibility(View.VISIBLE);
+                }
+            } else {
+                zielBitmap = myApp.getAnaglyphBitmap();
+                ivAnaglyph.setImageBitmap(zielBitmap);
+                if(myApp.getAnaglyphSaved()) {
+                    ivSave.setVisibility(View.INVISIBLE);
+                } else {
+                    ivSave.setVisibility(View.VISIBLE);
+                }
+            }
+
+            myApp.appendTrace("ShowAnaglyph: Halftone/Anaglyph gewechselt\n");
+        } catch(Throwable e) {
+            StackTraceElement se = e.getStackTrace()[0];
+            myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            Helper.showTraceDialog(myApp, this);
         }
     }
 }

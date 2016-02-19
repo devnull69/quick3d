@@ -22,6 +22,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.theiner.quick3d.asynch.ImageData;
+import org.theiner.quick3d.asynch.ImageSaver;
+import org.theiner.quick3d.asynch.ImageType;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -41,6 +45,8 @@ public class ShowFotos extends Activity {
     private ImageView ivWiggle;
     private ImageView ivShare;
     private ImageView ivSave;
+    private TextView tvCurrent;
+
     Q3DApplication myApp;
     private Boolean isCrossEyed = true;
 
@@ -78,6 +84,7 @@ public class ShowFotos extends Activity {
             ivWiggle = (ImageView) findViewById(R.id.ivWiggle);
             ivShare = (ImageView) findViewById(R.id.ivShare);
             ivSave = (ImageView) findViewById(R.id.ivSave);
+            tvCurrent = (TextView) findViewById(R.id.tvCurrent);
 
             myApp.appendTrace("ShowFotos: Image Views gefunden.\n");
 
@@ -97,6 +104,8 @@ public class ShowFotos extends Activity {
             ivWiggle.setImageResource(R.drawable.icon_wiggle);
             ivShare.setImageResource(R.drawable.icon_share);
             ivSave.setImageResource(R.drawable.icon_save);
+
+            tvCurrent.setText(R.string.crosseyed);
 
             if(myApp.getCrossEyedSaved()) {
                 // Save Button verstecken
@@ -142,12 +151,14 @@ public class ShowFotos extends Activity {
             isCrossEyed = !isCrossEyed;
 
             if(isCrossEyed) {
+                tvCurrent.setText(R.string.crosseyed);
                 if(myApp.getCrossEyedSaved()) {
                     ivSave.setVisibility(View.INVISIBLE);
                 } else {
                     ivSave.setVisibility(View.VISIBLE);
                 }
             } else {
+                tvCurrent.setText(R.string.paralleleyed);
                 if(myApp.getParallelEyedSaved()) {
                     ivSave.setVisibility(View.INVISIBLE);
                 } else {
@@ -191,67 +202,38 @@ public class ShowFotos extends Activity {
         }
     }
 
+    private void doSave(final boolean toBeShared) {
+        ivSave.setVisibility(View.INVISIBLE);
+        final ShowFotos that = this;
+        ImageSaver.SaveCompleteListener scl = new ImageSaver.SaveCompleteListener() {
+            @Override
+            public void onSaveComplete(String result) {
+                Toast.makeText(that, getString(R.string.foto_saved),
+                        Toast.LENGTH_LONG).show();
+
+                if(toBeShared) {
+                    doShare();
+                }
+            }
+        };
+
+        ImageData imageData = new ImageData();
+        if(isCrossEyed)
+            imageData.setImageType(ImageType.CROSSEYED);
+        else
+            imageData.setImageType(ImageType.PARALLELEYED);
+
+        imageData.setFileName(_filename);
+        imageData.setFirstBitmap(firstBitmap);
+        imageData.setSecondBitmap(secondBitmap);
+
+        ImageSaver imageSaver = new ImageSaver(myApp, scl);
+        imageSaver.execute(imageData);
+    }
+
     public void onSave(View view) {
         try {
-            ivSave.setVisibility(View.INVISIBLE);
-
-            Display display = getWindowManager().getDefaultDisplay();
-            Point size = new Point();
-
-            // Picture will be as high as the orignal width. Picture's width will be "scaleFactor" * width of original image
-            size.x = (int) (myApp.getImageWidth() * ((float)myApp.getImageWidth() / myApp.getImageHeight()));
-            size.y = myApp.getImageWidth();
-
-            Bitmap zielBitmap = Bitmap.createBitmap(size.x, size.y, Bitmap.Config.ARGB_8888);
-
-            int black = Color.argb(255, 0, 0, 0);
-            zielBitmap.eraseColor(black);
-
-            Canvas canvas = new Canvas(zielBitmap);
-
-            // Linkes Image soll links von der Mitte plaziert sein
-            // Mitte der linken Hälfte = size.x / 4
-            // Hälfte von imageSize.height weiter nach links = size.x/4 - imageSize.height/2
-            int leftMargin = (int)Math.floor((double)size.x/4 - myApp.getImageHeight()/2);
-
-            Paint paint = new Paint();
-            paint.setFilterBitmap(true);
-            paint.setDither(true);
-            canvas.drawBitmap(firstBitmap, leftMargin, 0, paint);
-
-            // Rechtes Images genauso weit von der Mitte nach rechts verschieben
-            leftMargin = leftMargin + (int)Math.floor((double)size.x/2);
-            canvas.drawBitmap(secondBitmap, leftMargin, 0, paint);
-
-            String appendix = "_crosseyed.jpg";
-
-            if (!isCrossEyed) {
-                appendix = "_paralleleyed.jpg";
-            }
-
-            File pictureFileDir = Helper.getDir();
-            pictureFileDir.mkdirs();
-            String photoFile = pictureFileDir.getPath() + File.separator + _filename + appendix;
-
-            File pictureFile = new File(photoFile);
-
-            OutputStream fOutputStream = new FileOutputStream(pictureFile);
-
-            zielBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOutputStream);
-
-            fOutputStream.flush();
-            fOutputStream.close();
-
-            if (isCrossEyed) {
-                myApp.setCrossEyedFilename(photoFile);
-                myApp.setCrossEyedSaved(true);
-            } else {
-                myApp.setParallelEyedFilename(photoFile);
-                myApp.setParallelEyedSaved(true);
-            }
-
-            Toast.makeText(this, getString(R.string.foto_saved),
-                    Toast.LENGTH_LONG).show();
+            doSave(false);
         } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
@@ -260,13 +242,10 @@ public class ShowFotos extends Activity {
 
     }
 
-    private void openSharing() {
+    private void doShare() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         shareIntent.setType("image/*");
-
-        if(isCrossEyed && !myApp.getCrossEyedSaved() || (!isCrossEyed && !myApp.getParallelEyedSaved()))
-            onSave(findViewById(R.id.ivSave));
 
         File file;
         if(isCrossEyed) {
@@ -277,6 +256,14 @@ public class ShowFotos extends Activity {
             shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
         }
         startActivity(shareIntent);
+    }
+
+    private void openSharing() {
+        if(isCrossEyed && !myApp.getCrossEyedSaved() || (!isCrossEyed && !myApp.getParallelEyedSaved())) {
+            doSave(true);
+        } else {
+            doShare();
+        }
     }
 
     public void onShare(View view) {
@@ -292,6 +279,7 @@ public class ShowFotos extends Activity {
             ivWiggle.setVisibility(View.INVISIBLE);
             ivShare.setVisibility(View.INVISIBLE);
             ivSave.setVisibility(View.INVISIBLE);
+            tvCurrent.setVisibility(View.INVISIBLE);
         } else {
             ivClose.setVisibility(View.VISIBLE);
             ivSwitch.setVisibility(View.VISIBLE);
@@ -300,6 +288,7 @@ public class ShowFotos extends Activity {
             ivShare.setVisibility(View.VISIBLE);
             if((isCrossEyed && !myApp.getCrossEyedSaved()) || (!isCrossEyed && !myApp.getParallelEyedSaved()))
                 ivSave.setVisibility(View.VISIBLE);
+            tvCurrent.setVisibility(View.VISIBLE);
         }
     }
 

@@ -7,4 +7,6 @@
     <string name="right_photo_tap">Align and then tap to take the picture for the right eye</string>
     <string name="compat_headline">Compatibility Error</string>
     <string name="compat_body">Unfortunately your device is not compatible. There is no camera aspect ratio that matches the screen aspect ratio!</string>
+    <string name="crosseyed">cross-eyed</string>
+    <string name="paralleleyed">parallel-eyed</string>
 </resources>

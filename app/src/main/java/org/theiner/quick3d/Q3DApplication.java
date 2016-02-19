@@ -13,16 +13,43 @@ public class Q3DApplication extends Application {
     private int imageHeight;
 
     private Boolean anaglyphSaved = false;
+    private Boolean halftoneSaved = false;
     private Boolean crossEyedSaved = false;
     private Boolean parallelEyedSaved = false;
 
     private Bitmap leftEyeBitmap = null;
     private Bitmap rightEyeBitmap = null;
     private Bitmap anaglyphBitmap = null;
+    private Bitmap halftoneBitmap = null;
 
     private String crossEyedFilename = "";
     private String parallelEyedFilename = "";
     private String anaglyphFilename = "";
+    private String halftoneFilename = "";
+
+    public String getHalftoneFilename() {
+        return halftoneFilename;
+    }
+
+    public void setHalftoneFilename(String halftoneFilename) {
+        this.halftoneFilename = halftoneFilename;
+    }
+
+    public Boolean getHalftoneSaved() {
+        return halftoneSaved;
+    }
+
+    public void setHalftoneSaved(Boolean halftoneSaved) {
+        this.halftoneSaved = halftoneSaved;
+    }
+
+    public Bitmap getHalftoneBitmap() {
+        return halftoneBitmap;
+    }
+
+    public void setHalftoneBitmap(Bitmap halftoneBitmap) {
+        this.halftoneBitmap = halftoneBitmap;
+    }
 
     public String getCrossEyedFilename() {
         return crossEyedFilename;

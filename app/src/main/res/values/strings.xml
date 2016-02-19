@@ -8,5 +8,7 @@
     <string name="foto_saved">Das Foto wurde gespeichert.</string>
     <string name="compat_headline">Kompatibilitätsfehler</string>
     <string name="compat_body">Ihr Gerät ist leider nicht kompatibel. Es gibt kein Kamera-Seitenverhältnis, das zum Bildschirm-Seitenverhältnis passt!</string>
+    <string name="crosseyed">Kreuzblick</string>
+    <string name="paralleleyed">Parallelblick</string>
 
 </resources>

@@ -112,8 +112,11 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
 
                     new Thread(new Runnable() {
                         public void run() {
+                            Bitmap halftoneBitmap;
+
                             Bitmap zielBitmap = myApp.getRightEyeBitmap();
                             zielBitmap = zielBitmap.copy(zielBitmap.getConfig(), true);
+                            halftoneBitmap = zielBitmap.copy(zielBitmap.getConfig(), true);
 
                             Bitmap rotBitmap = myApp.getLeftEyeBitmap();
                             int imgWidth = zielBitmap.getWidth();
@@ -121,19 +124,26 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
 
                             int[] zielpixels = new int[imgHeight * imgWidth];
                             int[] redpixels = new int[imgHeight * imgWidth];
+                            int[] halftonepixels = new int[imgHeight * imgWidth];
                             zielBitmap.getPixels(zielpixels, 0, imgWidth, 0, 0, imgWidth, imgHeight);
                             rotBitmap.getPixels(redpixels, 0, imgWidth, 0, 0, imgWidth, imgHeight);
 
                             for (int i = 0; i < imgHeight * imgWidth; i++) {
                                 try {
                                     zielpixels[i] = Color.argb(Color.alpha(zielpixels[i]), Color.red(redpixels[i]), Color.green(zielpixels[i]), Color.blue(zielpixels[i]));
+
+                                    // halftone
+                                    int redpart = (int) (Color.red(redpixels[i]) * 0.299 + Color.green(redpixels[i]) * 0.587 + Color.blue(redpixels[i]) * 0.114);
+                                    halftonepixels[i] = Color.argb(Color.alpha(zielpixels[i]), redpart, Color.green(zielpixels[i]), Color.blue(zielpixels[i]));
                                 } catch (Throwable e) {
                                     e.printStackTrace();
                                 }
                             }
 
                             zielBitmap.setPixels(zielpixels, 0, imgWidth, 0, 0, imgWidth, imgHeight);
+                            halftoneBitmap.setPixels(halftonepixels, 0, imgWidth, 0, 0, imgWidth, imgHeight);
                             myApp.setAnaglyphBitmap(zielBitmap);
+                            myApp.setHalftoneBitmap(halftoneBitmap);
                         }
                     }).start();
 
@@ -177,19 +187,6 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
 
                     Camera.Parameters params = camera.getParameters();
 
-//                    Display display = getActivity().getWindowManager().getDefaultDisplay();
-//                    Point size = new Point();
-//                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//                        display.getRealSize(size);
-//                    } else {
-//                        display.getSize(size);
-//                    }
-//                    int width = size.x;
-//                    int height = size.y;
-//                    float ratio = height / (float) width;
-//
-//                    List<Camera.Size> sizeList = params.getSupportedPictureSizes();
-//                    int chosenSize = Helper.getPictureSizeIndexForHeight(sizeList, 800, ratio);
                     params.setPictureSize(myApp.getImageWidth(), myApp.getImageHeight());
 
                     Helper.setRotationParameter(getActivity(), cameraId, params);
