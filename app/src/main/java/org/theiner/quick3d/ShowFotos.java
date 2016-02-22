@@ -43,6 +43,7 @@ public class ShowFotos extends Activity {
     private ImageView ivSwitch;
     private ImageView ivAnaglyph;
     private ImageView ivWiggle;
+    private ImageView ivCardboard;
     private ImageView ivShare;
     private ImageView ivSave;
     private TextView tvCurrent;
@@ -82,6 +83,7 @@ public class ShowFotos extends Activity {
             ivSwitch = (ImageView) findViewById(R.id.ivSwitch);
             ivAnaglyph = (ImageView) findViewById(R.id.ivAnaglyph);
             ivWiggle = (ImageView) findViewById(R.id.ivWiggle);
+            ivCardboard = (ImageView) findViewById(R.id.ivCardboard);
             ivShare = (ImageView) findViewById(R.id.ivShare);
             ivSave = (ImageView) findViewById(R.id.ivSave);
             tvCurrent = (TextView) findViewById(R.id.tvCurrent);
@@ -102,6 +104,7 @@ public class ShowFotos extends Activity {
             ivSwitch.setImageResource(R.drawable.icon_switch);
             ivAnaglyph.setImageResource(R.drawable.icon_anaglyph);
             ivWiggle.setImageResource(R.drawable.icon_wiggle);
+            ivCardboard.setImageResource(R.drawable.icon_cardboard);
             ivShare.setImageResource(R.drawable.icon_share);
             ivSave.setImageResource(R.drawable.icon_save);
 
@@ -137,7 +140,7 @@ public class ShowFotos extends Activity {
     }
 
     public void onClose(View view) {
-        System.exit(0);
+        Helper.showMessageOnClose(this);
     }
 
     public void onSwitch(View view) {
@@ -180,6 +183,20 @@ public class ShowFotos extends Activity {
             intent.putExtra(Quick3DMain.FILENAME_MESSAGE, _filename);
             startActivity(intent);
             myApp.appendTrace("ShowFotos: Auf Anaglyph gewechselt. Finish\n");
+            finish();
+        } catch(Throwable e) {
+            StackTraceElement se = e.getStackTrace()[0];
+            myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            Helper.showTraceDialog(myApp, this);
+        }
+    }
+
+    public void onCardboard(View view) {
+        try {
+            Intent intent = new Intent(this, ShowCardboard.class);
+            intent.putExtra(Quick3DMain.FILENAME_MESSAGE, _filename);
+            startActivity(intent);
+            myApp.appendTrace("ShowFotos: Auf Cardboard gewechselt. Finish\n");
             finish();
         } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
@@ -277,6 +294,7 @@ public class ShowFotos extends Activity {
             ivSwitch.setVisibility(View.INVISIBLE);
             ivAnaglyph.setVisibility(View.INVISIBLE);
             ivWiggle.setVisibility(View.INVISIBLE);
+            ivCardboard.setVisibility(View.INVISIBLE);
             ivShare.setVisibility(View.INVISIBLE);
             ivSave.setVisibility(View.INVISIBLE);
             tvCurrent.setVisibility(View.INVISIBLE);
@@ -285,6 +303,7 @@ public class ShowFotos extends Activity {
             ivSwitch.setVisibility(View.VISIBLE);
             ivAnaglyph.setVisibility(View.VISIBLE);
             ivWiggle.setVisibility(View.VISIBLE);
+            ivCardboard.setVisibility(View.VISIBLE);
             ivShare.setVisibility(View.VISIBLE);
             if((isCrossEyed && !myApp.getCrossEyedSaved()) || (!isCrossEyed && !myApp.getParallelEyedSaved()))
                 ivSave.setVisibility(View.VISIBLE);

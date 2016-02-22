@@ -3,10 +3,14 @@
     <string name="app_name">Quick3D</string>
     <string name="anaglyph_saved">Anaglyph file has been saved.</string>
     <string name="foto_saved">The image has been saved.</string>
-    <string name="left_photo_tap">Tap to take the picture for the left eye</string>
+    <string name="left_photo_tap">Please hold your cell phone in portrait mode and then tap to take the picture for the left eye</string>
     <string name="right_photo_tap">Align and then tap to take the picture for the right eye</string>
     <string name="compat_headline">Compatibility Error</string>
     <string name="compat_body">Unfortunately your device is not compatible. There is no camera aspect ratio that matches the screen aspect ratio!</string>
+    <string name="close_sure">Are you sure?</string>
+    <string name="close_message">If you close the app right now, you\'ll lose all unsaved images.</string>
     <string name="crosseyed">cross-eyed</string>
     <string name="paralleleyed">parallel-eyed</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

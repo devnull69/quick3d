@@ -2,13 +2,17 @@
 <resources>
 
     <string name="app_name">Quick3D</string>
-    <string name="left_photo_tap">Tippen, um Foto für das linke Auge zu schießen</string>
-    <string name="right_photo_tap">Ausrichten, dann tippen, um Foto für das rechte Auge zu schießen</string>
+    <string name="left_photo_tap">Halten Sie Ihr Handy aufrecht und tippen Sie dann, um das Foto für das linke Auge zu schießen</string>
+    <string name="right_photo_tap">Ausrichten, dann tippen, um das Foto für das rechte Auge zu schießen</string>
     <string name="anaglyph_saved">Das Anaglyph wurde gespeichert.</string>
     <string name="foto_saved">Das Foto wurde gespeichert.</string>
     <string name="compat_headline">Kompatibilitätsfehler</string>
     <string name="compat_body">Ihr Gerät ist leider nicht kompatibel. Es gibt kein Kamera-Seitenverhältnis, das zum Bildschirm-Seitenverhältnis passt!</string>
+    <string name="close_sure">Sind Sie sicher?</string>
+    <string name="close_message">Wenn Sie die Anwendung jetzt schließen, gehen alle ungespeicherten Bilder verloren.</string>
     <string name="crosseyed">Kreuzblick</string>
     <string name="paralleleyed">Parallelblick</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
 
 </resources>

@@ -120,10 +120,7 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
                     try {
                         myApp.appendTrace("LeftEyePhoto: Photo speichern Start\n");
 
-                        //Bitmap fisheyedTest = Helper.fisheye(Helper.getRotatedBitmap(bytes));
-
                         myApp.setLeftEyeBitmap(Helper.getRotatedBitmap(bytes));
-                        //myApp.setLeftEyeBitmap(fisheyedTest);
                         Quick3DMain actMain = (Quick3DMain) getActivity();
 
                         myApp.appendTrace("LeftEyePhoto: Photo speichern Ende\n");

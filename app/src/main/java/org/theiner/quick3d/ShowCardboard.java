@@ -3,8 +3,6 @@ package org.theiner.quick3d;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.theiner.quick3d.asynch.ImageData;
@@ -19,26 +18,23 @@ import org.theiner.quick3d.asynch.ImageSaver;
 import org.theiner.quick3d.asynch.ImageType;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 
 
-public class ShowAnaglyph extends Activity {
+public class ShowCardboard extends Activity {
 
     private String _filename;
-    private Bitmap zielBitmap;
+    private Bitmap cardboardBitmap;
+    private ImageView ivImage;
+
+    private ImageView ivClose;
+    private ImageView ivTwoImages;
+    private ImageView ivAnaglyph;
+    private ImageView ivWiggle;
+    private ImageView ivShare;
+    private ImageView ivSave;
+
     Q3DApplication myApp;
-
-    ImageView ivClose;
-    ImageView ivSwitch;
-    ImageView ivTwoImages;
-    ImageView ivCardboard;
-    ImageView ivWiggle;
-    ImageView ivShare;
-    ImageView ivSave;
-    ImageView ivAnaglyph;
-
-    private boolean isHalftone = false;
+    private Boolean isCrossEyed = true;
 
     private boolean showTools = true;
 
@@ -47,7 +43,7 @@ public class ShowAnaglyph extends Activity {
         myApp = ((Q3DApplication)this.getApplicationContext());
         try {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_show_anaglyph);
+            setContentView(R.layout.activity_show_cardboard);
 
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 View decorView = getWindow().getDecorView();
@@ -59,40 +55,45 @@ public class ShowAnaglyph extends Activity {
                 decorView.setSystemUiVisibility(uiOptions);
             }
 
+            myApp.appendTrace("ShowCardboard: Super Konstruktor aufgerufen, Content View gesetzt.\n");
+
             Intent intent = getIntent();
             _filename = intent.getStringExtra(Quick3DMain.FILENAME_MESSAGE);
 
-            // wait if Anagylph thread is not yet ready
-            while(myApp.getAnaglyphBitmap() == null);
+            myApp.appendTrace("ShowCardboard: Intent erhalten. Filename: " + _filename + "\n");
 
-            zielBitmap = myApp.getAnaglyphBitmap();
-            isHalftone = false;
+            // wait if Cardboard thread is not yet ready
+            while(myApp.getCardboardBitmap() == null);
 
-            ivAnaglyph = (ImageView) findViewById(R.id.ivAnaglyph);
-            ivAnaglyph.setImageBitmap(zielBitmap);
-
+            ivImage = (ImageView) findViewById(R.id.ivImage);
             ivClose = (ImageView) findViewById(R.id.ivClose);
-            ivClose.setImageResource(R.drawable.icon_close);
-
-            ivSwitch = (ImageView) findViewById(R.id.ivSwitch);
-            ivSwitch.setImageResource(R.drawable.icon_halftone);
-
             ivTwoImages = (ImageView) findViewById(R.id.ivTwoImages);
-            ivTwoImages.setImageResource(R.drawable.icon_twoimages);
-
-            ivCardboard = (ImageView) findViewById(R.id.ivCardboard);
-            ivCardboard.setImageResource(R.drawable.icon_cardboard);
-
+            ivAnaglyph = (ImageView) findViewById(R.id.ivAnaglyph);
             ivWiggle = (ImageView) findViewById(R.id.ivWiggle);
-            ivWiggle.setImageResource(R.drawable.icon_wiggle);
-
             ivShare = (ImageView) findViewById(R.id.ivShare);
-            ivShare.setImageResource(R.drawable.icon_share);
-
             ivSave = (ImageView) findViewById(R.id.ivSave);
+
+            myApp.appendTrace("ShowCardboard: Image Views gefunden.\n");
+
+            cardboardBitmap = myApp.getCardboardBitmap();
+            ivImage.setImageBitmap(cardboardBitmap);
+
+            myApp.appendTrace("ShowCardboard: Bild eingebunden.\n");
+
+
+            ivClose.setImageResource(R.drawable.icon_close);
+            ivTwoImages.setImageResource(R.drawable.icon_twoimages);
+            ivAnaglyph.setImageResource(R.drawable.icon_anaglyph);
+            ivWiggle.setImageResource(R.drawable.icon_wiggle);
+            ivShare.setImageResource(R.drawable.icon_share);
             ivSave.setImageResource(R.drawable.icon_save);
-            if(myApp.getAnaglyphSaved())
+
+            if(myApp.getCardboardSaved()) {
+                // Save Button verstecken
                 ivSave.setVisibility(View.INVISIBLE);
+            }
+
+            myApp.appendTrace("ShowCardboard: Image Resourcen gesetzt.\n");
 
         } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
@@ -110,6 +111,9 @@ public class ShowAnaglyph extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
         return true;
     }
 
@@ -122,6 +126,21 @@ public class ShowAnaglyph extends Activity {
             Intent intent = new Intent(this, ShowFotos.class);
             intent.putExtra(Quick3DMain.FILENAME_MESSAGE, _filename);
             startActivity(intent);
+            myApp.appendTrace("ShowCardboard: Auf zwei Images gewechselt. Finish\n");
+            finish();
+        } catch(Throwable e) {
+            StackTraceElement se = e.getStackTrace()[0];
+            myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            Helper.showTraceDialog(myApp, this);
+        }
+    }
+
+    public void onAnaglyph(View view) {
+        try {
+            Intent intent = new Intent(this, ShowAnaglyph.class);
+            intent.putExtra(Quick3DMain.FILENAME_MESSAGE, _filename);
+            startActivity(intent);
+            myApp.appendTrace("ShowFotos: Auf Anaglyph gewechselt. Finish\n");
             finish();
         } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
@@ -135,19 +154,7 @@ public class ShowAnaglyph extends Activity {
             Intent intent = new Intent(this, ShowWiggle.class);
             intent.putExtra(Quick3DMain.FILENAME_MESSAGE, _filename);
             startActivity(intent);
-            finish();
-        } catch(Throwable e) {
-            StackTraceElement se = e.getStackTrace()[0];
-            myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
-            Helper.showTraceDialog(myApp, this);
-        }
-    }
-
-    public void onCardboard(View view) {
-        try {
-            Intent intent = new Intent(this, ShowCardboard.class);
-            intent.putExtra(Quick3DMain.FILENAME_MESSAGE, _filename);
-            startActivity(intent);
+            myApp.appendTrace("ShowFotos: Auf Wiggle gewechselt. Finish\n");
             finish();
         } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
@@ -158,11 +165,11 @@ public class ShowAnaglyph extends Activity {
 
     private void doSave(final boolean toBeShared) {
         ivSave.setVisibility(View.INVISIBLE);
-        final ShowAnaglyph that = this;
+        final ShowCardboard that = this;
         ImageSaver.SaveCompleteListener scl = new ImageSaver.SaveCompleteListener() {
             @Override
             public void onSaveComplete(String result) {
-                Toast.makeText(that, getString(R.string.anaglyph_saved),
+                Toast.makeText(that, getString(R.string.foto_saved),
                         Toast.LENGTH_LONG).show();
 
                 if(toBeShared) {
@@ -172,16 +179,11 @@ public class ShowAnaglyph extends Activity {
         };
 
         ImageData imageData = new ImageData();
+        imageData.setImageType(ImageType.CARDBOARD);
 
         imageData.setFileName(_filename);
+        imageData.setFirstBitmap(cardboardBitmap);
 
-        if(isHalftone) {
-            imageData.setImageType(ImageType.HALFTONE);
-        } else {
-            imageData.setImageType(ImageType.ANAGLYPH);
-        }
-
-        imageData.setFirstBitmap(zielBitmap);
         ImageSaver imageSaver = new ImageSaver(myApp, scl);
         imageSaver.execute(imageData);
     }
@@ -189,12 +191,12 @@ public class ShowAnaglyph extends Activity {
     public void onSave(View view) {
         try {
             doSave(false);
-
         } catch(Throwable e) {
             StackTraceElement se = e.getStackTrace()[0];
             myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
             Helper.showTraceDialog(myApp, this);
         }
+
     }
 
     private void doShare() {
@@ -202,17 +204,14 @@ public class ShowAnaglyph extends Activity {
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         shareIntent.setType("image/*");
 
-        String dateiname = myApp.getAnaglyphFilename();
-        if(isHalftone)
-            dateiname = myApp.getHalftoneFilename();
-        File file = new File(dateiname);
+        File file;
+        file = new File(myApp.getCardboardFilename());
         shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-
         startActivity(shareIntent);
     }
 
     private void openSharing() {
-        if((!isHalftone && !myApp.getAnaglyphSaved()) || (isHalftone && !myApp.getHalftoneSaved())) {
+        if(!myApp.getCardboardSaved()) {
             doSave(true);
         } else {
             doShare();
@@ -227,54 +226,20 @@ public class ShowAnaglyph extends Activity {
         showTools = !showTools;
         if(!showTools) {
             ivClose.setVisibility(View.INVISIBLE);
-            ivSwitch.setVisibility(View.INVISIBLE);
             ivTwoImages.setVisibility(View.INVISIBLE);
-            ivCardboard.setVisibility(View.INVISIBLE);
+            ivAnaglyph.setVisibility(View.INVISIBLE);
             ivWiggle.setVisibility(View.INVISIBLE);
             ivShare.setVisibility(View.INVISIBLE);
             ivSave.setVisibility(View.INVISIBLE);
         } else {
             ivClose.setVisibility(View.VISIBLE);
-            ivSwitch.setVisibility(View.VISIBLE);
             ivTwoImages.setVisibility(View.VISIBLE);
-            ivCardboard.setVisibility(View.VISIBLE);
+            ivAnaglyph.setVisibility(View.VISIBLE);
             ivWiggle.setVisibility(View.VISIBLE);
             ivShare.setVisibility(View.VISIBLE);
-            if(!myApp.getAnaglyphSaved())
+            if(!myApp.getCardboardSaved())
                 ivSave.setVisibility(View.VISIBLE);
         }
     }
 
-    public void onSwitch(View view) {
-        try {
-
-            isHalftone = !isHalftone;
-
-            if(isHalftone) {
-                // wait if Halftone thread is not yet ready
-                while(myApp.getHalftoneBitmap() == null);
-                zielBitmap = myApp.getHalftoneBitmap();
-                ivAnaglyph.setImageBitmap(zielBitmap);
-                if(myApp.getHalftoneSaved()) {
-                    ivSave.setVisibility(View.INVISIBLE);
-                } else {
-                    ivSave.setVisibility(View.VISIBLE);
-                }
-            } else {
-                zielBitmap = myApp.getAnaglyphBitmap();
-                ivAnaglyph.setImageBitmap(zielBitmap);
-                if(myApp.getAnaglyphSaved()) {
-                    ivSave.setVisibility(View.INVISIBLE);
-                } else {
-                    ivSave.setVisibility(View.VISIBLE);
-                }
-            }
-
-            myApp.appendTrace("ShowAnaglyph: Halftone/Anaglyph gewechselt\n");
-        } catch(Throwable e) {
-            StackTraceElement se = e.getStackTrace()[0];
-            myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
-            Helper.showTraceDialog(myApp, this);
-        }
-    }
 }

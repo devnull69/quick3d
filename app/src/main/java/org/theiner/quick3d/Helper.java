@@ -6,7 +6,12 @@ import android.app.Application;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.hardware.Camera;
 import android.media.ExifInterface;
 import android.os.Environment;
@@ -128,7 +133,7 @@ public class Helper {
         double w = srcimage.getWidth();
         double h = srcimage.getHeight();
         int[] srcpixels = new int[(int)(w*h)];
-        srcimage.getPixels(srcpixels, 0, (int)w, 0, 0, (int)w, (int)h);
+        srcimage.getPixels(srcpixels, 0, (int) w, 0, 0, (int) w, (int) h);
 
         Bitmap resultimage = srcimage.copy(srcimage.getConfig(), true);
 
@@ -172,6 +177,7 @@ public class Helper {
                         // map from -1 ... 1 to image coordinates
                         int y2 = (int)(((nyn+1)*h)/2.0);
                         // find (x2,y2) position from source pixels
+
                         int srcpos = (int)(y2*w+x2);
                         // make sure that position stays within arrays
                         if (srcpos>=0 & srcpos < w*h) {
@@ -184,8 +190,55 @@ public class Helper {
 
         }
 
-        resultimage.setPixels(dstpixels, 0, (int)w, 0, 0, (int)w, (int)h);
+        resultimage.setPixels(dstpixels, 0, (int) w, 0, 0, (int) w, (int) h);
         //return result pixels
         return resultimage;
+    }
+
+    public static Bitmap putOnBiggerBitmap(Bitmap original) {
+        Point size = new Point();
+        size.x = original.getHeight() / 2;
+        size.y = original.getWidth();
+
+        double aspect = (double)(original.getHeight()) / original.getWidth();
+
+        // Oben und unten 15% Platz lassen
+        int ymargin = (int) (size.y * 0.15);
+        int rectHeight = size.y - (ymargin*2);
+        int rectWidth = (int) (rectHeight / aspect);
+        int xmargin = (size.x - rectWidth) / 2;
+
+        Bitmap zielBitmap = Bitmap.createBitmap(size.x, size.y, Bitmap.Config.ARGB_8888);
+
+        int black = Color.argb(255, 0, 0, 0);
+        zielBitmap.eraseColor(black);
+
+        Canvas canvas = new Canvas(zielBitmap);
+        Paint paint = new Paint();
+        paint.setFilterBitmap(true);
+        paint.setDither(true);
+
+        canvas.drawBitmap(original, null, new Rect(xmargin, ymargin, rectWidth + xmargin, rectHeight + ymargin), paint);
+
+        return zielBitmap;
+    }
+
+    public static void showMessageOnClose(final Activity act) {
+        new AlertDialog.Builder(act)
+                .setTitle(R.string.close_sure)
+                .setMessage(R.string.close_message)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        System.exit(0);
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+
+                        .show();
     }
 }

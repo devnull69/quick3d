@@ -2,19 +2,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/ivLeft"
+                android:id="@+id/ivImage"
                 android:onClick="onShowHide"/>
         <ImageView
             android:layout_width="40dp"
@@ -29,8 +20,8 @@
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="55dp"
-            android:id="@+id/ivSwitch"
-            android:onClick="onSwitch" />
+            android:id="@+id/ivTwoImages"
+            android:onClick="onTwoImages" />
 
         <ImageView
             android:layout_width="40dp"
@@ -45,14 +36,6 @@
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="145dp"
-            android:id="@+id/ivCardboard"
-            android:onClick="onCardboard" />
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="190dp"
             android:id="@+id/ivWiggle"
             android:onClick="onWiggle" />
 
@@ -60,7 +43,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="235dp"
+            android:layout_marginTop="190dp"
             android:id="@+id/ivShare"
             android:onClick="onShare" />
 
@@ -68,29 +51,8 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="280dp"
+            android:layout_marginTop="235dp"
             android:id="@+id/ivSave"
             android:onClick="onSave" />
-     </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/ivRight"
-                android:onClick="onShowHide"/>
-    </LinearLayout>
-
-</LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:layout_marginLeft="280dp"
-        android:id="@+id/tvCurrent"/>
-
 </RelativeLayout>
+

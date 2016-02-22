@@ -20,7 +20,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="55dp"
         android:id="@+id/ivSwitch"
         android:onClick="onSwitch" />
 
@@ -28,7 +28,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="100dp"
         android:id="@+id/ivTwoImages"
         android:onClick="onTwoImages" />
 
@@ -36,7 +36,15 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="175dp"
+        android:layout_marginTop="145dp"
+        android:id="@+id/ivCardboard"
+        android:onClick="onCardboard" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="190dp"
         android:id="@+id/ivWiggle"
         android:onClick="onWiggle" />
 
@@ -44,7 +52,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="230dp"
+        android:layout_marginTop="235dp"
         android:id="@+id/ivShare"
         android:onClick="onShare" />
 
@@ -52,7 +60,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="285dp"
+        android:layout_marginTop="280dp"
         android:id="@+id/ivSave"
         android:onClick="onSave" />
 

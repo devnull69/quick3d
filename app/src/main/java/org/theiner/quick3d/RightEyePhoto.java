@@ -1,13 +1,17 @@
 package org.theiner.quick3d;
 
 import android.annotation.TargetApi;
+import android.app.ActivityManager;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.hardware.Camera;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -112,40 +116,78 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
 
                     new Thread(new Runnable() {
                         public void run() {
-                            Bitmap halftoneBitmap;
+                            try {
+                                // Thread fuer die beiden Anaglyph-Darstellungen
+                                Bitmap halftoneBitmap;
 
-                            Bitmap zielBitmap = myApp.getRightEyeBitmap();
-                            zielBitmap = zielBitmap.copy(zielBitmap.getConfig(), true);
-                            halftoneBitmap = zielBitmap.copy(zielBitmap.getConfig(), true);
+                                Bitmap zielBitmap = myApp.getRightEyeBitmap();
+                                zielBitmap = zielBitmap.copy(zielBitmap.getConfig(), true);
+                                halftoneBitmap = zielBitmap.copy(zielBitmap.getConfig(), true);
 
-                            Bitmap rotBitmap = myApp.getLeftEyeBitmap();
-                            int imgWidth = zielBitmap.getWidth();
-                            int imgHeight = zielBitmap.getHeight();
+                                Bitmap rotBitmap = myApp.getLeftEyeBitmap();
+                                int imgWidth = zielBitmap.getWidth();
+                                int imgHeight = zielBitmap.getHeight();
 
-                            int[] zielpixels = new int[imgHeight * imgWidth];
-                            int[] redpixels = new int[imgHeight * imgWidth];
-                            int[] halftonepixels = new int[imgHeight * imgWidth];
-                            zielBitmap.getPixels(zielpixels, 0, imgWidth, 0, 0, imgWidth, imgHeight);
-                            rotBitmap.getPixels(redpixels, 0, imgWidth, 0, 0, imgWidth, imgHeight);
+                                int[] zielpixels = new int[imgHeight * imgWidth];
+                                int[] redpixels = new int[imgHeight * imgWidth];
+                                int[] halftonepixels = new int[imgHeight * imgWidth];
+                                zielBitmap.getPixels(zielpixels, 0, imgWidth, 0, 0, imgWidth, imgHeight);
+                                rotBitmap.getPixels(redpixels, 0, imgWidth, 0, 0, imgWidth, imgHeight);
 
-                            for (int i = 0; i < imgHeight * imgWidth; i++) {
-                                try {
-                                    zielpixels[i] = Color.argb(Color.alpha(zielpixels[i]), Color.red(redpixels[i]), Color.green(zielpixels[i]), Color.blue(zielpixels[i]));
+                                for (int i = 0; i < imgHeight * imgWidth; i++) {
+                                    try {
+                                        zielpixels[i] = Color.argb(Color.alpha(zielpixels[i]), Color.red(redpixels[i]), Color.green(zielpixels[i]), Color.blue(zielpixels[i]));
 
-                                    // halftone
-                                    int redpart = (int) (Color.red(redpixels[i]) * 0.299 + Color.green(redpixels[i]) * 0.587 + Color.blue(redpixels[i]) * 0.114);
-                                    halftonepixels[i] = Color.argb(Color.alpha(zielpixels[i]), redpart, Color.green(zielpixels[i]), Color.blue(zielpixels[i]));
-                                } catch (Throwable e) {
-                                    e.printStackTrace();
+                                        // halftone
+                                        int redpart = (int) (Color.red(redpixels[i]) * 0.299 + Color.green(redpixels[i]) * 0.587 + Color.blue(redpixels[i]) * 0.114);
+                                        halftonepixels[i] = Color.argb(Color.alpha(zielpixels[i]), redpart, Color.green(zielpixels[i]), Color.blue(zielpixels[i]));
+                                    } catch (Throwable e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                            }
 
-                            zielBitmap.setPixels(zielpixels, 0, imgWidth, 0, 0, imgWidth, imgHeight);
-                            halftoneBitmap.setPixels(halftonepixels, 0, imgWidth, 0, 0, imgWidth, imgHeight);
-                            myApp.setAnaglyphBitmap(zielBitmap);
-                            myApp.setHalftoneBitmap(halftoneBitmap);
+                                zielBitmap.setPixels(zielpixels, 0, imgWidth, 0, 0, imgWidth, imgHeight);
+                                halftoneBitmap.setPixels(halftonepixels, 0, imgWidth, 0, 0, imgWidth, imgHeight);
+                                myApp.setAnaglyphBitmap(zielBitmap);
+                                myApp.setHalftoneBitmap(halftoneBitmap);
+                            } catch(Throwable e) {
+                                e.printStackTrace();
+                            }
                         }
                     }).start();
+
+                    new Thread(new Runnable() {
+                        public void run() {
+                            try {
+                                // Thread fuer Cardboard-Image
+                                Bitmap linksBitmap = myApp.getLeftEyeBitmap();
+                                Bitmap rechtsBitmap = myApp.getRightEyeBitmap();
+
+                                Paint paint = new Paint();
+                                paint.setFilterBitmap(true);
+                                paint.setDither(true);
+
+                                // Verzerrung einzeln durchführen
+                                linksBitmap = Helper.fisheye(Helper.putOnBiggerBitmap(linksBitmap));
+                                rechtsBitmap = Helper.fisheye(Helper.putOnBiggerBitmap(rechtsBitmap));
+
+                                Point size = new Point();
+                                size.x = linksBitmap.getWidth();
+                                size.y = linksBitmap.getHeight();
+
+                                // Zusammen auf ein großes Bitmap
+                                Bitmap zielBitmap = Bitmap.createBitmap(size.x * 2, size.y, Bitmap.Config.ARGB_8888);
+                                Canvas canvas = new Canvas(zielBitmap);
+                                canvas.drawBitmap(linksBitmap, null, new Rect(0, 0, size.x - 1, size.y - 1), paint);
+                                canvas.drawBitmap(rechtsBitmap, null, new Rect(size.x, 0, size.x * 2 - 1, size.y - 1), paint);
+
+                                myApp.setCardboardBitmap(zielBitmap);
+                            } catch(Throwable e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+
 
                     actMain.callbackAfterPictureSaved();
                 }

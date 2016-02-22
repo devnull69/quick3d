@@ -29,6 +29,7 @@ public class ShowWiggle extends Activity {
     ImageView ivClose;
     ImageView ivTwoImages;
     ImageView ivAnaglyph;
+    ImageView ivCardboard;
 
     private boolean showTools = true;
 
@@ -63,6 +64,9 @@ public class ShowWiggle extends Activity {
 
             ivAnaglyph = (ImageView) findViewById(R.id.ivAnaglyph);
             ivAnaglyph.setImageResource(R.drawable.icon_anaglyph);
+
+            ivCardboard = (ImageView) findViewById(R.id.ivCardboard);
+            ivCardboard.setImageResource(R.drawable.icon_cardboard);
 
             me = this;
 
@@ -121,7 +125,7 @@ public class ShowWiggle extends Activity {
     public void onClose(View view) {
         myTimer.cancel();
         myTimer.purge();
-        System.exit(0);
+        Helper.showMessageOnClose(this);
     }
 
     public void onTwoImages(View view) {
@@ -154,16 +158,33 @@ public class ShowWiggle extends Activity {
         }
     }
 
+    public void onCardboard(View view) {
+        try {
+            myTimer.cancel();
+            myTimer.purge();
+            Intent intent = new Intent(this, ShowCardboard.class);
+            intent.putExtra(Quick3DMain.FILENAME_MESSAGE, _filename);
+            startActivity(intent);
+            finish();
+        } catch(Throwable e) {
+            StackTraceElement se = e.getStackTrace()[0];
+            myApp.prependTrace(e.toString() + "\n" + se.getClassName() + ":" + se.getLineNumber() + "\n\n");
+            Helper.showTraceDialog(myApp, this);
+        }
+    }
+
     public void onShowHide(View view) {
         showTools = !showTools;
         if(!showTools) {
             ivClose.setVisibility(View.INVISIBLE);
             ivTwoImages.setVisibility(View.INVISIBLE);
             ivAnaglyph.setVisibility(View.INVISIBLE);
+            ivCardboard.setVisibility(View.INVISIBLE);
         } else {
             ivClose.setVisibility(View.VISIBLE);
             ivTwoImages.setVisibility(View.VISIBLE);
             ivAnaglyph.setVisibility(View.VISIBLE);
+            ivCardboard.setVisibility(View.VISIBLE);
         }
     }
 }

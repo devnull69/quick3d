@@ -16,16 +16,43 @@ public class Q3DApplication extends Application {
     private Boolean halftoneSaved = false;
     private Boolean crossEyedSaved = false;
     private Boolean parallelEyedSaved = false;
+    private Boolean cardboardSaved = false;
 
     private Bitmap leftEyeBitmap = null;
     private Bitmap rightEyeBitmap = null;
     private Bitmap anaglyphBitmap = null;
     private Bitmap halftoneBitmap = null;
+    private Bitmap cardboardBitmap = null;
 
     private String crossEyedFilename = "";
     private String parallelEyedFilename = "";
     private String anaglyphFilename = "";
     private String halftoneFilename = "";
+    private String cardboardFilename = "";
+
+    public Boolean getCardboardSaved() {
+        return cardboardSaved;
+    }
+
+    public void setCardboardSaved(Boolean cardboardSaved) {
+        this.cardboardSaved = cardboardSaved;
+    }
+
+    public Bitmap getCardboardBitmap() {
+        return cardboardBitmap;
+    }
+
+    public void setCardboardBitmap(Bitmap cardboardBitmap) {
+        this.cardboardBitmap = cardboardBitmap;
+    }
+
+    public String getCardboardFilename() {
+        return cardboardFilename;
+    }
+
+    public void setCardboardFilename(String cardboardFilename) {
+        this.cardboardFilename = cardboardFilename;
+    }
 
     public String getHalftoneFilename() {
         return halftoneFilename;

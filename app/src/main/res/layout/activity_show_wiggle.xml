@@ -20,7 +20,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="55dp"
         android:id="@+id/ivTwoImages"
         android:onClick="onTwoImages" />
 
@@ -28,9 +28,17 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="100dp"
         android:id="@+id/ivAnaglyph"
         android:onClick="onAnaglyph" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="145dp"
+        android:id="@+id/ivCardboard"
+        android:onClick="onCardboard" />
 
 
 </RelativeLayout>

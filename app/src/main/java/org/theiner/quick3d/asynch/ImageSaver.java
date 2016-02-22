@@ -40,7 +40,33 @@ public class ImageSaver extends AsyncTask<ImageData, Void, String> {
     protected String doInBackground(ImageData... imageData) {
 
         ImageData myImageData = imageData[0];
-        if(myImageData.getImageType() == ImageType.ANAGLYPH || myImageData.getImageType() == ImageType.HALFTONE) {
+        if(myImageData.getImageType() == ImageType.CARDBOARD) {
+            File pictureFileDir = Helper.getDir();
+            pictureFileDir.mkdirs();
+            String appendix = "_cardboard.jpg";
+            String photoFile = pictureFileDir.getPath() + File.separator + myImageData.getFileName() + appendix;
+
+            File pictureFile = new File(photoFile);
+
+            OutputStream fOutputStream = null;
+            try {
+                fOutputStream = new FileOutputStream(pictureFile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            myImageData.getFirstBitmap().compress(Bitmap.CompressFormat.JPEG, 100, fOutputStream);
+
+            try {
+                fOutputStream.flush();
+                fOutputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            myApp.setCardboardFilename(photoFile);
+            myApp.setCardboardSaved(true);
+        } else if(myImageData.getImageType() == ImageType.ANAGLYPH || myImageData.getImageType() == ImageType.HALFTONE) {
             File pictureFileDir = Helper.getDir();
             pictureFileDir.mkdirs();
             String appendix = "_anaglyph.jpg";
