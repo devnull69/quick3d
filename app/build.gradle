@@ -2,11 +2,12 @@ apply plugin: 'com.android.application'
 
 android {
 
+    String propertyName = "AndroidKeystore.properties"
     Properties props = new Properties()
-    if(project.hasProperty("AndroidKeystore.properties")
-            && new File(project.property("AndroidKeystore.properties")).exists()) {
+    if(project.hasProperty(propertyName)
+            && new File(project.property(propertyName)).exists()) {
 
-        props.load(new FileInputStream(file(project.property("AndroidKeystore.properties"))))
+        props.load(new FileInputStream(file(project.property(propertyName))))
     }
 
     signingConfigs {
