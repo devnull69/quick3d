@@ -1,12 +1,20 @@
 apply plugin: 'com.android.application'
 
 android {
+
+    Properties props = new Properties()
+    if(project.hasProperty("AndroidKeystore.properties")
+            && new File(project.property("AndroidKeystore.properties")).exists()) {
+
+        props.load(new FileInputStream(file(project.property("AndroidKeystore.properties"))))
+    }
+
     signingConfigs {
         standardselfsigned {
-            keyAlias 'TheinerKey'
-            keyPassword 'ngc64738'
-            storeFile file('C:/Users/Thomas/Keystore/android.jks')
-            storePassword 'ngc64738'
+            keyAlias props['keyAlias']
+            keyPassword props['keyPassword']
+            storeFile file(props['storeFile'])
+            storePassword props['storePassword']
         }
     }
     compileSdkVersion 19
