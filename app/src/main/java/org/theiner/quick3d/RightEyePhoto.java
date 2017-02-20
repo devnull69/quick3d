@@ -229,6 +229,12 @@ public class RightEyePhoto extends Fragment implements SurfaceHolder.Callback{
 
                     Camera.Parameters params = camera.getParameters();
 
+                    // set autofocus
+                    if (params.getSupportedFocusModes().contains(
+                            Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
+                        params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+                    }
+
                     params.setPictureSize(myApp.getImageWidth(), myApp.getImageHeight());
 
                     Helper.setRotationParameter(getActivity(), cameraId, params);

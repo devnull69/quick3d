@@ -170,6 +170,12 @@ public class LeftEyePhoto extends Fragment implements SurfaceHolder.Callback {
 
                     Camera.Parameters params = camera.getParameters();
 
+                    // set autofocus
+                    if (params.getSupportedFocusModes().contains(
+                            Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
+                        params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+                    }
+
                     Display display = getActivity().getWindowManager().getDefaultDisplay();
                     Point size = new Point();
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
